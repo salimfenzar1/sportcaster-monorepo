@@ -1,0 +1,30 @@
+.card {
+  border-radius: 10px;
+}
+
+.card-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card img {
+  width: 80px;
+  height: 80px;
+}
+
+.list-group-item {
+  font-size: 0.9rem;
+  background: #f9f9f9;
+  border: none;
+}
+
+.shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card-body-weather {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Zorgt ervoor dat de inhoud wordt gecentreerd over de volledige hoogte */
+}
