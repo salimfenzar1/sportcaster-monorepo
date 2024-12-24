@@ -9,7 +9,10 @@
     "noFallthroughCasesInSwitch": true
   },
   "files": [],
-  "include": [],
+  "include": [
+    "libs/**/*",
+    "src/**/*"
+  ],
   "references": [
     {
       "path": "./tsconfig.editor.json"
