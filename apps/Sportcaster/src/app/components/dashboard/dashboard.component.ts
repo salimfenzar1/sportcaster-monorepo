@@ -10,7 +10,8 @@ import { WeatherService } from '@libs/backend/services/weather.service';
 })
 export class DashboardComponent {
   currentWeather: any = null;
-  weatherForecast: any = null
+  weatherForecast: any = null;
+  currentWeatherCondition: string = '';
   sportsRecommendations = [
     {
       name: 'Cycling',
@@ -83,12 +84,16 @@ export class DashboardComponent {
       (data) => {
         this.currentWeather = {
           ...this.currentWeather,
-          temperature: `${data.main.temp}°C`,
+          temperature: `${Math.round(data.main.temp)}°C`,
+          feelsLike: `${Math.round(data.main.feels_like)}°C`,
           condition: data.weather[0].main,
-          windSpeed: `${data.wind.speed} m/s`,
+          windSpeed: `${Math.round(data.wind.speed * 3.6)} km/h`,
           humidity: `${data.main.humidity}%`,
           precipitation: data.rain ? `${data.rain['1h']} mm` : '0 mm',
+
         };
+        console.log(this.currentWeather.condition)
+        this.updateBackgroundCondition(this.currentWeather.condition);
       },
       (error) => {
         console.error('Fout bij het ophalen van het weer:', error);
@@ -103,10 +108,10 @@ export class DashboardComponent {
             hour: '2-digit',
             minute: '2-digit',
           }),
-          temperature: `${forecast.main.temp}°C`,
-  condition: forecast.weather[0].main,
-  precipitation: forecast.rain ? `${forecast.rain['3h']} mm` : '0 mm',
-  windSpeed: `${forecast.wind.speed} m/s`,
+          temperature: `${Math.round(forecast.main.temp)}°C`,
+          condition: forecast.weather[0].main,
+          precipitation: forecast.rain ? `${forecast.rain['3h']} mm` : '0 mm',
+          windSpeed: `${Math.round(forecast.wind.speed * 3.6)} km/h`,
         }));
       },
       (error) => {
@@ -115,13 +120,40 @@ export class DashboardComponent {
     );
   }
   
+  updateBackgroundCondition(condition: string): void {
+    console.log(this.currentWeatherCondition)
+    switch (condition) {
+      case 'clear':
+      case 'sunny':
+        this.currentWeatherCondition = 'sunny';
+        break;
+      case 'rain':
+      case 'rainy':
+        this.currentWeatherCondition = 'rainy';
+        break;
+      case 'snow':
+        this.currentWeatherCondition = 'snowy';
+        break;
+      case 'clouds':
+      case 'cloudy':
+        this.currentWeatherCondition = 'cloudy';
+        break;
+      case 'mist':
+      case 'misty':
+        this.currentWeatherCondition = 'misty'
+        break;
+      default:
+        this.currentWeatherCondition = 'cloudy';
 
+    }
+  }
   getWeatherIcon(condition: string): string {
     const icons: { [key: string]: string } = {
       Sunny: 'assets/weather-icons/sunny.png',
       Rainy: 'assets/weather-icons/rainy.png',
       Cloudy: 'assets/weather-icons/cloudy.png',
       Snowy: 'assets/weather-icons/snowy.png',
+      Mist: 'assets/weather-icons/misty.png',
     };
     return icons[condition] || 'assets/weather-icons/cloudy.png';
   }

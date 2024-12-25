@@ -1,0 +1,49 @@
+.header {
+    padding: 10px 0;
+  }
+  
+  .navbar-brand {
+    font-size: 1.25rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    height: 40px;
+    width: auto;
+    max-height: 100%;
+    object-fit: contain;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  
+  .brand-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .navbar-toggler {
+    border: none;
+    margin-right: 10px;
+  }
+
+  
+  .btn {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .collapse .navbar-nav {
+    justify-content: flex-end;
+  }
+  .nav-item{
+    margin-left: 5px;
+  }
+  
+  @media (max-width:365px) {
+    .brand-name{
+        display: none;
+    }
+    
+  }

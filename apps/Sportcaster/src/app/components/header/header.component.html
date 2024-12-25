@@ -1,0 +1,35 @@
+<header class="header bg-light shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light container">
+      <!-- Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="assets/weather-logo.png" alt="Sportcaster Logo" class="logo mr-2" />
+        <span class="brand-name">Sportcaster</span>
+      </a>
+  
+      <!-- Toggler voor mobiel -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+        aria-controls="navbarContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Menu items -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <button class="btn btn-outline-primary w-100 mb-2" (click)="onLoginClick()">Login</button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-primary w-100" (click)="onRegisterClick()">Registreer</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  
