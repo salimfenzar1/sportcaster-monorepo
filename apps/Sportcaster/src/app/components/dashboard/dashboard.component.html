@@ -13,7 +13,7 @@
   <div *ngIf="currentWeather" class="row g-4 align-items-stretch">
     <!-- Locatienaam en icoon -->
     <div  class="col-12 col-md-4">
-      <div style="border:none !important" [ngClass]="currentWeatherCondition"  class="card text-white h-100">
+      <div style="border:none !important" [ngClass]="currentWeatherCondition"  class="card text-white h-100 weather-dashboard">
         <div class="card-body card-body-weather text-center">
           <img
             [src]="getWeatherIcon(currentWeather.condition)"

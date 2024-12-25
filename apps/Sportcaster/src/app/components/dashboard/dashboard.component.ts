@@ -138,7 +138,7 @@ export class DashboardComponent {
       case 'cloudy':
         this.currentWeatherCondition = 'cloudy';
         break;
-      case 'mist':
+      case 'Mist':
       case 'misty':
         this.currentWeatherCondition = 'misty'
         break;
