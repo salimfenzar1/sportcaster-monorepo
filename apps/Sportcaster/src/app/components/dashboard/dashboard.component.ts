@@ -49,7 +49,7 @@ export class DashboardComponent {
           this.updateWeatherDataByCoordinates(latitude, longitude);
   
           this.reverseGeocodingService
-          .getCityFromCoordinates(51.626425, 4.863557)
+          .getCityFromCoordinates(latitude, longitude)
           .subscribe(
             (response) => {
               if (response.results && response.results.length > 0) {
