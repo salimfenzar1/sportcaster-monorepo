@@ -1,13 +1,33 @@
 <div  class="weather-dashboard container-fluid">
   <div class="container">
   <!-- Knop voor huidige locatie -->
-  <div class="row mb-4">
-    <div class="col text-center">
-      <button class="btn btn-warning btn-lg mt-4" (click)="getCurrentLocation()">
+  <div class="row mb-4 justify-content-between align-items-center">
+    <!-- Knop voor huidige locatie -->
+    <div class="col-auto">
+      <button style="width: 38vh;" class="btn btn-warning btn-lg mt-4" (click)="getCurrentLocation()">
         <i class="bi bi-geo-alt"></i> Gebruik de huidige locatie
       </button>
     </div>
+  
+    <!-- Zoekbalk -->
+    <div class="col-auto mt-4 search-bar-container">
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Zoek op stad of postcode"
+          [(ngModel)]="enteredLocation"
+        />
+        <button
+          class="btn btn-primary"
+          type="button"
+        >
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </div>
   </div>
+  
 
   <!-- Huidig weer en metriek -->
   <div *ngIf="currentWeather" class="row g-4 align-items-stretch">
