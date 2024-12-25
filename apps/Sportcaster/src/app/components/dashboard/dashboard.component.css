@@ -80,5 +80,11 @@ button i {
   .search-bar-container {
     width: 100%; /* Laat de zoekbalk de volledige breedte innemen op mobiel */
   }
+    .col-auto {
+      width: 100% !important;
+    }
+    .responsive-margin{
+      margin-top: .5rem !important;
+    }
 }
 
