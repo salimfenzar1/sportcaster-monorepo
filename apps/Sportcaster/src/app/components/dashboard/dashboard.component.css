@@ -26,5 +26,35 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%; /* Zorgt ervoor dat de inhoud wordt gecentreerd over de volledige hoogte */
+  height: 100%; 
+}
+.weather-dashboard {
+  min-height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.stroke{
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5),
+  2px 2px 4px rgba(0, 0, 0, 0.5),
+  2px 2px 4px rgba(0, 0, 0, 0.5); 
+}
+
+.sunny {
+  background-image: url('/assets/gifs/sunny.gif');
+}
+
+.rainy {
+  background-image: url('/assets/gifs/rainy.gif');
+}
+
+.snowy {
+  background-image: url('/assets/gifs/snowy.gif');
+}
+
+.cloudy {
+  background-image: url('/assets/gifs/cloudy.gif');
+}
+.misty{
+  background-image: url('/assets/gifs/misty.gif');
 }
