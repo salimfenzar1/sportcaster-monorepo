@@ -48,24 +48,29 @@ export class DashboardComponent {
   
           this.updateWeatherDataByCoordinates(latitude, longitude);
   
-          // Reverse geocoding om stad, provincie en land te verkrijgen
           this.reverseGeocodingService
-            .getCityFromCoordinates(latitude, longitude)
-            .subscribe(
-              (response) => {
-                if (response.results && response.results.length > 0) {
-                  const city = response.results[0].components.city || 'Unknown City';
-                  const province = response.results[0].components.state_code || 'Unknown Province';
-                  const country = response.results[0].components.country || 'Unknown Country';
-  
-                  this.currentWeather.location = `${city}, ${province}, ${country}`;
-                } else {
-                  console.error('Geen resultaten van OpenCage API.');
-                  this.currentWeather.location = 'Unknown Location';
-                }
-              },
-              (error) => {
-                console.error('Fout bij het ophalen van de locatie:', error);
+          .getCityFromCoordinates(51.626425, 4.863557)
+          .subscribe(
+            (response) => {
+              if (response.results && response.results.length > 0) {
+                const components = response.results[0].components;
+                const city =
+                  components.city ||
+                  components.town ||
+                  components.village ||
+                  components.hamlet ||
+                  'Unknown City';
+                const province = components.state_code || 'Unknown Province';
+                const country = components.country || 'Unknown Country';
+        
+                this.currentWeather.location = `${city}, ${province}, ${country}`;
+              } else {
+                console.error('Geen resultaten van OpenCage API.');
+                this.currentWeather.location = 'Unknown Location';
+              }
+            },
+            (error) => {
+              console.error('Fout bij het ophalen van de locatie:', error);
               }
             );
         },
