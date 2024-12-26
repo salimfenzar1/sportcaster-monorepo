@@ -20,6 +20,11 @@
             "glob": "**/*",
             "input": "apps/Sportcaster/src/assets",
             "output": "/assets"
+          },
+          {
+            "input": "apps/Sportcaster/src",
+            "glob": "staticwebapp.config.json",
+            "output": "/"
           }
         ],
         "styles": ["apps/Sportcaster/src/styles.css", "node_modules/bootstrap/dist/css/bootstrap.min.css",  "node_modules/bootstrap-icons/font/bootstrap-icons.css"],
