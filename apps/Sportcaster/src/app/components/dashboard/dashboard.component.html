@@ -1,15 +1,12 @@
 <div  class="weather-dashboard container-fluid">
   <div class="container">
-  <!-- Knop voor huidige locatie -->
   <div class="row mb-4 justify-content-between align-items-center">
-    <!-- Knop voor huidige locatie -->
     <div class="col-auto">
       <button style="width: 100%;" class="btn btn-warning btn-lg mt-4" (click)="getCurrentLocation()">
         <i class="bi bi-geo-alt"></i> Gebruik de huidige locatie
       </button>
     </div>
   
-    <!-- Zoekbalk -->
     <div class="col-auto mt-4 search-bar-container responsive-margin">
       <div class="input-group">
         <input
@@ -31,14 +28,13 @@
   </div>
   
 
-  <!-- Huidig weer en metriek -->
+  <!-- Huidig weer -->
   <div *ngIf="currentWeather" class="row g-4 align-items-stretch">
-    <!-- Locatienaam en icoon -->
     <div  class="col-12 col-md-4">
       <div style="border:none !important" [ngClass]="currentWeatherCondition"  class="card text-white h-100 weather-dashboard">
         <div class="card-body card-body-weather text-center">
           <img
-            [src]="getWeatherIcon(currentWeather.condition)"
+            [src]="weatherHelperService.getWeatherIcon(currentWeather.condition)"
             alt="Weather Icon"
             class="mb-3"
             style="width: 100px; height: 100px;"
@@ -100,7 +96,7 @@
   </div>
 
 
-
+<!--aanbevolen sectie-->
   <div *ngIf="weatherForecast" class="row g-4 mt-4">
     <div class="col-md-12">
       <div class="card text-dark bg-light shadow">
