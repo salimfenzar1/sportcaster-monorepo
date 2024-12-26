@@ -6,23 +6,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class WeatherService {
-  private apiKey = 'f3d9383ab566f26d2e802fb83f63346d'; // Vervang met je eigen API-sleutel
+  private apiKey = 'f3d9383ab566f26d2e802fb83f63346d';
   private currentWeatherUrl = 'https://api.openweathermap.org/data/2.5/weather';
   private forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast';
+  private geocodingUrl = 'http://api.openweathermap.org/geo/1.0/direct';
 
   constructor(private http: HttpClient) {}
 
-  // Huidig weer ophalen op basis van locatie
-  getCurrentWeather(location: string): Observable<any> {
+  // Huidig weer ophalen op basis van stad (wereldwijd)
+  getWeatherByCity(city: string): Observable<any> {
     return this.http.get(
-      `${this.currentWeatherUrl}?q=${location}&units=metric&appid=${this.apiKey}`
-    );
-  }
-
-  // Weersvoorspelling ophalen op basis van locatie
-  getWeatherForecast(location: string): Observable<any> {
-    return this.http.get(
-      `${this.forecastUrl}?q=${location}&units=metric&appid=${this.apiKey}`
+      `${this.geocodingUrl}?q=${city}&limit=1&appid=${this.apiKey}`
     );
   }
 

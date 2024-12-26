@@ -12,6 +12,8 @@ export class DashboardComponent {
   currentWeather: any = null;
   weatherForecast: any = null;
   currentWeatherCondition: string = '';
+  enteredLocation: string = '';
+
   sportsRecommendations = [
     {
       name: 'Cycling',
@@ -32,7 +34,6 @@ export class DashboardComponent {
       indoor: false,
     },
   ];
-  enteredLocation: string = '';
 
   constructor(
     private reverseGeocodingService: ReverseGeocodingService,
@@ -45,32 +46,31 @@ export class DashboardComponent {
         (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-  
+
           this.updateWeatherDataByCoordinates(latitude, longitude);
-  
+
           this.reverseGeocodingService
-          .getCityFromCoordinates(latitude, longitude)
-          .subscribe(
-            (response) => {
-              if (response.results && response.results.length > 0) {
-                const components = response.results[0].components;
-                const city =
-                  components.city ||
-                  components.town ||
-                  components.village ||
-                  components.hamlet ||
-                  'Unknown City';
-                const province = components.state_code || 'Unknown Province';
-                const country = components.country || 'Unknown Country';
-        
-                this.currentWeather.location = `${city}, ${province}, ${country}`;
-              } else {
-                console.error('Geen resultaten van OpenCage API.');
-                this.currentWeather.location = 'Unknown Location';
-              }
-            },
-            (error) => {
-              console.error('Fout bij het ophalen van de locatie:', error);
+            .getCityFromCoordinates(latitude, longitude)
+            .subscribe(
+              (response) => {
+                if (response.results && response.results.length > 0) {
+                  const components = response.results[0].components;
+                  const city =
+                    components.city ||
+                    components.town ||
+                    components.village ||
+                    components.hamlet ||
+                    'Unknown City';
+                  const province = components.state_code || 'Unknown Province';
+                  const country = components.country || 'Unknown Country';
+
+                  this.currentWeather.location = `${city}, ${province}, ${country}`;
+                } else {
+                  this.currentWeather.location = 'Unknown Location';
+                }
+              },
+              (error) => {
+                console.error('Fout bij het ophalen van de locatie:', error);
               }
             );
         },
@@ -83,7 +83,59 @@ export class DashboardComponent {
       alert('Geolocation is not supported by your browser.');
     }
   }
+  searchWeather(): void {
+    if (!this.enteredLocation || this.enteredLocation.trim() === '') {
+      alert('Voer een geldige locatie in (stad).');
+      return;
+    }
   
+    const location = this.enteredLocation.trim();
+  
+    // Zoeken op stad
+    this.weatherService.getWeatherByCity(location).subscribe(
+      (data) => {
+        if (data && data.length > 0) {
+          const latitude = data[0].lat;
+          const longitude = data[0].lon;
+          this.updateWeatherDataByCoordinates(latitude, longitude);
+  
+          // Reverse geocoding om locatiegegevens op te halen
+          this.reverseGeocodingService
+            .getCityFromCoordinates(latitude, longitude)
+            .subscribe(
+              (response) => {
+                if (response.results && response.results.length > 0) {
+                  const components = response.results[0].components;
+                  const city =
+                    components.city ||
+                    components.town ||
+                    components.village ||
+                    components.hamlet ||
+                    'Unknown City';
+                  const province = components.state_code || 'Unknown Province';
+                  const country = components.country || 'Unknown Country';
+  
+                  this.currentWeather.location = `${city}, ${province}, ${country}`;
+                } else {
+                  this.currentWeather.location = 'Unknown Location';
+                }
+              },
+              (error) => {
+                console.error('Fout bij het ophalen van de locatie:', error);
+              }
+            );
+        } else {
+          alert('Geen locatie gevonden voor deze stad.');
+        }
+      },
+      (error) => {
+        console.error('Fout bij het ophalen van coördinaten:', error);
+        alert('Er is een fout opgetreden bij het zoeken naar deze locatie.');
+      }
+    );
+  }
+  
+
   updateWeatherDataByCoordinates(latitude: number, longitude: number): void {
     this.weatherService.getWeatherByCoordinates(latitude, longitude).subscribe(
       (data) => {
@@ -95,9 +147,7 @@ export class DashboardComponent {
           windSpeed: `${Math.round(data.wind.speed * 3.6)} km/h`,
           humidity: `${data.main.humidity}%`,
           precipitation: data.rain ? `${data.rain['1h']} mm` : '0 mm',
-
         };
-        console.log(this.currentWeather.condition)
         this.updateBackgroundCondition(this.currentWeather.condition);
       },
       (error) => {
@@ -105,7 +155,7 @@ export class DashboardComponent {
         alert('Er is een fout opgetreden bij het ophalen van het weer.');
       }
     );
-  
+
     this.weatherService.getForecastByCoordinates(latitude, longitude).subscribe(
       (data) => {
         this.weatherForecast = data.list.slice(0, 3).map((forecast: any) => ({
@@ -124,10 +174,10 @@ export class DashboardComponent {
       }
     );
   }
-  
+
   updateBackgroundCondition(condition: string): void {
-    console.log(this.currentWeatherCondition)
-    switch (condition) {
+    console.log(condition);
+    switch (condition.toLowerCase()) {
       case 'clear':
       case 'sunny':
         this.currentWeatherCondition = 'sunny';
@@ -143,19 +193,19 @@ export class DashboardComponent {
       case 'cloudy':
         this.currentWeatherCondition = 'cloudy';
         break;
-      case 'Mist':
-      case 'misty':
-        this.currentWeatherCondition = 'misty'
+      case 'mist':
+        this.currentWeatherCondition = 'misty';
         break;
       default:
         this.currentWeatherCondition = 'cloudy';
-
     }
   }
+
   getWeatherIcon(condition: string): string {
     const icons: { [key: string]: string } = {
       Sunny: 'assets/weather-icons/sunny.png',
-      Rainy: 'assets/weather-icons/rainy.png',
+      Clear: 'assets/weather-icons/sunny.png',
+      Rain: 'assets/weather-icons/rainy.png',
       Cloudy: 'assets/weather-icons/cloudy.png',
       Snowy: 'assets/weather-icons/snowy.png',
       Mist: 'assets/weather-icons/misty.png',

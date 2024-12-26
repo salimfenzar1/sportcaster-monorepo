@@ -15,12 +15,14 @@
         <input
           type="text"
           class="form-control"
-          placeholder="Zoek op stad of postcode"
+          placeholder="Zoek op stad"
           [(ngModel)]="enteredLocation"
+          (keyup.enter)="searchWeather()"
         />
         <button
           class="btn btn-primary"
           type="button"
+          (click)="searchWeather()"
         >
           <i class="bi bi-search"></i>
         </button>
