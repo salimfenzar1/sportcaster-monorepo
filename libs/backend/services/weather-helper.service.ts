@@ -38,6 +38,7 @@ import { Observable, forkJoin } from 'rxjs';
         case 'cloudy':
           return 'cloudy';
         case 'mist':
+        case 'fog':
           return 'misty';
         default:
           return 'cloudy';
@@ -45,12 +46,14 @@ import { Observable, forkJoin } from 'rxjs';
     }
   
     getWeatherIcon(condition: string): string {
+        console.log(condition)
       const icons: { [key: string]: string } = {
         Sunny: 'assets/weather-icons/sunny.png',
         Clear: 'assets/weather-icons/sunny.png',
         Rain: 'assets/weather-icons/rainy.png',
         Cloudy: 'assets/weather-icons/cloudy.png',
         Snowy: 'assets/weather-icons/snowy.png',
+        Fog: 'assets/weather-icons/misty.png',
         Mist: 'assets/weather-icons/misty.png',
       };
       return icons[condition] || 'assets/weather-icons/cloudy.png';
