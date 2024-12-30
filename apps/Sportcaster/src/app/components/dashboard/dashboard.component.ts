@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WeatherHelperService } from '@libs/backend/services/weather-helper.service';
 
 @Component({
@@ -7,11 +7,12 @@ import { WeatherHelperService } from '@libs/backend/services/weather-helper.serv
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   currentWeather: any = null;
   weatherForecast: any = null;
   currentWeatherCondition: string = '';
   enteredLocation: string = '';
+  isCurrentLocation: boolean = true;
 
   sportsRecommendations = [
     { name: 'Cycling', duration: '30 minutes', intensity: 'Moderate', indoor: false },
@@ -20,6 +21,11 @@ export class DashboardComponent {
   ];
 
   constructor(public weatherHelperService: WeatherHelperService) {}
+
+  // Automatisch de huidige locatie gebruiken bij component initialisatie
+  ngOnInit(): void {
+    this.getCurrentLocation();
+  }
 
   getCurrentLocation(): void {
     if ('geolocation' in navigator) {
@@ -42,11 +48,13 @@ export class DashboardComponent {
 
   searchWeather(): void {
     if (!this.enteredLocation || this.enteredLocation.trim() === '') {
-      alert('Voer een geldige locatie in (stad).');
+      this.getCurrentLocation();
+      this.isCurrentLocation = true;
       return;
     }
 
     const location = this.enteredLocation.trim();
+    this.isCurrentLocation = false;
 
     this.weatherHelperService.getLocationDetails(location).subscribe(
       (response) => {
@@ -68,6 +76,16 @@ export class DashboardComponent {
   private updateWeatherData(latitude: number, longitude: number): void {
     this.weatherHelperService.getWeatherData(latitude, longitude).subscribe(
       (data) => {
+        const locationComponents = data.location.results[0].components;
+
+        const cityOrVillage =
+          locationComponents.city ||
+          locationComponents.town ||
+          locationComponents.village ||
+          'Onbekende plaats';
+
+        const country = locationComponents.country || 'Onbekend land';
+
         this.currentWeather = {
           temperature: `${Math.round(data.currentWeather.main.temp)}°C`,
           feelsLike: `${Math.round(data.currentWeather.main.feels_like)}°C`,
@@ -75,9 +93,7 @@ export class DashboardComponent {
           windSpeed: `${Math.round(data.currentWeather.wind.speed * 3.6)} km/h`,
           humidity: `${data.currentWeather.main.humidity}%`,
           precipitation: data.currentWeather.rain ? `${data.currentWeather.rain['1h']} mm` : '0 mm',
-          location: `${data.location.results[0].components.city || 'Unknown City'}, 
-                     ${data.location.results[0].components.state || 'Unknown Province'}, 
-                     ${data.location.results[0].components.country || 'Unknown Country'}`,
+          location: `${cityOrVillage}, ${country}`,
         };
 
         this.weatherForecast = data.forecast.list.slice(0, 3).map((forecast: any) => ({

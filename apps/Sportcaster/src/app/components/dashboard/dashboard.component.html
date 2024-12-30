@@ -1,91 +1,91 @@
-<div  class="weather-dashboard container-fluid">
+<div class="weather-dashboard container-fluid">
   <div class="container">
-  <div class="row mb-4 justify-content-between align-items-center">
-    <div class="col-auto">
-      <button style="width: 100%;" class="btn btn-warning btn-lg mt-4" (click)="getCurrentLocation()">
-        <i class="bi bi-geo-alt"></i> Gebruik de huidige locatie
-      </button>
-    </div>
+    <div class="row mb-4 justify-content-between align-items-center">
+      <div class="col-auto"></div>
   
-    <div class="col-auto mt-4 search-bar-container responsive-margin">
-      <div class="input-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Zoek op stad"
-          [(ngModel)]="enteredLocation"
-          (keyup.enter)="searchWeather()"
-        />
-        <button
-          class="btn btn-primary"
-          type="button"
-          (click)="searchWeather()"
-        >
-          <i class="bi bi-search"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-  
-
-  <!-- Huidig weer -->
-  <div *ngIf="currentWeather" class="row g-4 align-items-stretch">
-    <div  class="col-12 col-md-4">
-      <div style="border:none !important" [ngClass]="currentWeatherCondition"  class="card text-white h-100 weather-dashboard">
-        <div class="card-body card-body-weather text-center">
-          <img
-            [src]="weatherHelperService.getWeatherIcon(currentWeather.condition)"
-            alt="Weather Icon"
-            class="mb-3"
-            style="width: 100px; height: 100px;"
+      <div class="col-auto mt-4 search-bar-container responsive-margin">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Zoek op stad"
+            [(ngModel)]="enteredLocation"
+            (keyup.enter)="searchWeather()"
           />
-          <h4 class="card-title mb-2 stroke">{{ currentWeather.location }}</h4>
+          <button
+            class="btn btn-primary"
+            type="button"
+            (click)="searchWeather()"
+          >
+            <i class="bi bi-search"></i>
+          </button>
         </div>
       </div>
     </div>
+  
+    <!-- Huidig weer -->
+    <div *ngIf="currentWeather" class="row g-4 align-items-stretch">
+      <div class="col-12 col-md-4">
+        <div style="border:none !important" [ngClass]="currentWeatherCondition" class="card text-white h-100 weather-dashboard">
+          <div class="card-body card-body-weather text-center">
+            <span  *ngIf="isCurrentLocation"  class="badge bg-success mb-2">Huidige Locatie</span>
+            <img
+              [src]="weatherHelperService.getWeatherIcon(currentWeather.condition)"
+              alt="Weather Icon"
+              class="mb-3"
+              style="width: 100px; height: 100px;"
+            />
+            <h4 class="card-title mb-2 stroke">{{ currentWeather.location }}</h4>
+            <p  *ngIf="isCurrentLocation" class="text-white-50">
+              * Het weer wordt getoond op basis van je huidige locatie
+            </p>
+          </div>
+        </div>
+      </div>
 
-    <div class="col-12 col-md-8">
-      <div class="row g-3">
-        <div
-          class="col-6 col-md-4"
-          *ngFor="let metric of [
-            { title: 'Temperatuur', value: currentWeather.temperature, icon: 'thermometer-half' },
-            { title: 'Voelt als', value: currentWeather.feelsLike, icon: 'thermometer-sun' },
-            { title: 'Vochtigheid', value: currentWeather.humidity, icon: 'droplet' },
-            { title: 'Weerconditie', value: currentWeather.condition, icon: 'cloud' },
-            { title: 'Windsnelheid', value: currentWeather.windSpeed, icon: 'wind' },
-            { title: 'Neerslag', value: currentWeather.precipitation, icon: 'cloud-rain' }
-          ]"
-        >
-          <div class="card text-white bg-primary shadow h-100">
-            <div class="card-body text-center">
-              <i class="bi bi-{{ metric.icon }} mb-3" style="font-size: 1.5rem;"></i>
-              <h6 class="card-title">{{ metric.title }}</h6>
-              <p class="card-text">{{ metric.value }}</p>
+      <div class="col-12 col-md-8">
+        <div class="row g-3">
+          <div
+            class="col-6 col-md-4"
+            *ngFor="let metric of [
+              { title: 'Temperatuur', value: currentWeather.temperature, icon: 'thermometer-half' },
+              { title: 'Voelt als', value: currentWeather.feelsLike, icon: 'thermometer-sun' },
+              { title: 'Vochtigheid', value: currentWeather.humidity, icon: 'droplet' },
+              { title: 'Weerconditie', value: currentWeather.condition, icon: 'cloud' },
+              { title: 'Windsnelheid', value: currentWeather.windSpeed, icon: 'wind' },
+              { title: 'Neerslag', value: currentWeather.precipitation, icon: 'cloud-rain' }
+            ]"
+          >
+            <div class="card text-white bg-primary shadow h-100">
+              <div class="card-body text-center">
+                <i class="bi bi-{{ metric.icon }} mb-3" style="font-size: 1.5rem;"></i>
+                <h6 class="card-title">{{ metric.title }}</h6>
+                <p class="card-text">{{ metric.value }}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Weersvoorspelling -->
-  <div *ngIf="weatherForecast.length" class="row g-4 mt-4">
-    <div class="col-md-12">
-      <div class="card text-white bg-dark shadow">
-        <div class="card-header text-center">3-Uurs Weersvoorspelling</div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-6 col-md-4" *ngFor="let forecast of weatherForecast">
-              <div class="card text-white bg-secondary shadow h-100">
-                <div class="card-body text-center">
-                  <h6 class="card-title">{{ forecast.time }}</h6>
-                  <i class="bi bi-thermometer-half"></i>
-                  <p class="card-text"><strong>{{ forecast.temperature }}</strong></p>
-                  <i class="bi bi-wind"></i>
-                  <p class="card-text"><strong>{{ forecast.windSpeed }}</strong></p>
-                  <i class="bi bi-cloud-rain"></i>
-                  <p class="card-text"><strong>{{ forecast.precipitation }}</strong></p>
+  
+    <!-- Weersvoorspelling -->
+    <div *ngIf="weatherForecast.length" class="row g-4 mt-4">
+      <div class="col-md-12">
+        <div class="card text-white bg-dark shadow">
+          <div class="card-header text-center">3-Uurs Weersvoorspelling</div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-6 col-md-4" *ngFor="let forecast of weatherForecast">
+                <div class="card text-white bg-secondary shadow h-100">
+                  <div class="card-body text-center">
+                    <h6 class="card-title">{{ forecast.time }}</h6>
+                    <i class="bi bi-thermometer-half"></i>
+                    <p class="card-text"><strong>{{ forecast.temperature }}</strong></p>
+                    <i class="bi bi-wind"></i>
+                    <p class="card-text"><strong>{{ forecast.windSpeed }}</strong></p>
+                    <i class="bi bi-cloud-rain"></i>
+                    <p class="card-text"><strong>{{ forecast.precipitation }}</strong></p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -93,28 +93,26 @@
         </div>
       </div>
     </div>
-  </div>
 
-
-<!--aanbevolen sectie-->
-  <div *ngIf="weatherForecast" class="row g-4 mt-4">
-    <div class="col-md-12">
-      <div class="card text-dark bg-light shadow">
-        <div class="card-header">Aanbevolen sporten</div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item" *ngFor="let sport of sportsRecommendations">
-              <h5>{{ sport.name }}</h5>
-              <p>
-                <strong>Duration:</strong> {{ sport.duration }}<br />
-                <strong>Intensity:</strong> {{ sport.intensity }}<br />
-                <strong>Indoor:</strong> {{ sport.indoor ? 'Yes' : 'No' }}
-              </p>
-            </li>
-          </ul>
+    <!-- Aanbevolen sectie -->
+    <div *ngIf="weatherForecast" class="row g-4 mt-4">
+      <div class="col-md-12">
+        <div class="card text-dark bg-light shadow">
+          <div class="card-header">Aanbevolen sporten</div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" *ngFor="let sport of sportsRecommendations">
+                <h5>{{ sport.name }}</h5>
+                <p>
+                  <strong>Duration:</strong> {{ sport.duration }}<br />
+                  <strong>Intensity:</strong> {{ sport.intensity }}<br />
+                  <strong>Indoor:</strong> {{ sport.indoor ? 'Yes' : 'No' }}
+                </p>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>
