@@ -46,7 +46,7 @@ import { Observable, forkJoin } from 'rxjs';
     }
   
     getWeatherIcon(condition: string): string {
-        console.log(condition)
+        // console.log(condition)
       const icons: { [key: string]: string } = {
         Sunny: 'assets/weather-icons/sunny.png',
         Clear: 'assets/weather-icons/sunny.png',
@@ -58,5 +58,10 @@ import { Observable, forkJoin } from 'rxjs';
       };
       return icons[condition] || 'assets/weather-icons/cloudy.png';
     }
+
+    getCitySuggestions(query: string): Observable<any> {
+      return this.weatherService.getCitySuggestions(query);
+    }
+    
   }
   

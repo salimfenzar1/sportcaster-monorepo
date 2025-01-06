@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherHelperService } from '@libs/backend/services/weather-helper.service';
+import { CitySuggestionService } from '@libs/backend/services/city-suggestion.service';
 
 @Component({
   standalone: false,
@@ -13,6 +14,8 @@ export class DashboardComponent implements OnInit {
   currentWeatherCondition: string = '';
   enteredLocation: string = '';
   isCurrentLocation: boolean = true;
+  suggestedCities: any[] = [];
+
 
   sportsRecommendations = [
     { name: 'Cycling', duration: '30 minutes', intensity: 'Moderate', indoor: false },
@@ -20,7 +23,7 @@ export class DashboardComponent implements OnInit {
     { name: 'Running', duration: '45 minutes', intensity: 'High', indoor: false },
   ];
 
-  constructor(public weatherHelperService: WeatherHelperService) {}
+  constructor(public weatherHelperService: WeatherHelperService, private citySuggestionService: CitySuggestionService) {}
 
   ngOnInit(): void {
     this.getCurrentLocation();
@@ -80,6 +83,38 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+
+  selectCity(city: any): void {
+    this.enteredLocation = city.name;
+    this.suggestedCities = []; // Verwijder suggesties
+    this.searchWeather(); // Zoek weergegevens
+  }
+  
+
+  onCityInput(): void {
+    if (this.enteredLocation.length < 2) {
+      this.suggestedCities = [];
+      return;
+    }
+  
+    this.citySuggestionService.getCitySuggestions(this.enteredLocation).subscribe(
+      (response) => {
+        console.log('Geoapify API Response:', response); //  Check de API output in de console
+  
+        this.suggestedCities = response.map((city: any) => ({
+          name: `${city.name}, ${city.country}`
+        }));
+      },
+      (error) => {
+        console.error('Fout bij ophalen van suggesties:', error);
+      }
+    );
+  }
+  
+  
+  
+  
+  
 
   private updateWeatherData(latitude: number, longitude: number): void {
     this.weatherHelperService.getWeatherData(latitude, longitude).subscribe(

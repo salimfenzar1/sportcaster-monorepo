@@ -32,4 +32,9 @@ export class WeatherService {
       `${this.forecastUrl}?lat=${latitude}&lon=${longitude}&units=metric&appid=${this.apiKey}`
     );
   }
+
+  getCitySuggestions(query: string): Observable<any> {
+    return this.http.get(`${this.geocodingUrl}?q=${query}&limit=5&appid=${this.apiKey}`);
+  }
+  
 }
