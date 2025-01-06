@@ -22,7 +22,6 @@ export class DashboardComponent implements OnInit {
 
   constructor(public weatherHelperService: WeatherHelperService) {}
 
-  // Automatisch de huidige locatie gebruiken bij component initialisatie
   ngOnInit(): void {
     this.getCurrentLocation();
   }
@@ -45,6 +44,15 @@ export class DashboardComponent implements OnInit {
       alert('Geolocation is not supported by your browser.');
     }
   }
+  
+  refreshWeather(): void {
+    if (this.isCurrentLocation) {
+      this.getCurrentLocation(); 
+    } else {
+      this.searchWeather(); 
+    }
+  }
+  
 
   searchWeather(): void {
     if (!this.enteredLocation || this.enteredLocation.trim() === '') {

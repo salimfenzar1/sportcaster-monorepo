@@ -27,12 +27,15 @@
     <div *ngIf="currentWeather" class="row g-4 align-items-stretch">
       <div class="col-12 col-md-4">
         <div style="border:none !important" [ngClass]="currentWeatherCondition" class="card text-white h-100 weather-dashboard">
-          <div class="card-body card-body-weather text-center">
+          <div style="justify-content:normal !important" class="card-body card-body-weather text-center">
+            <button style="margin-left: auto;" class="btn" (click)="refreshWeather()">
+               <i style="font-size: 1.4rem;"  class="bi bi-arrow-clockwise"></i> 
+           </button>
             <span  *ngIf="isCurrentLocation"  class="badge bg-success mb-2">Huidige Locatie</span>
             <img
               [src]="weatherHelperService.getWeatherIcon(currentWeather.condition)"
               alt="Weather Icon"
-              class="mb-3"
+              class=""
               style="width: 100px; height: 100px;"
             />
             <h4 class="card-title mb-2 stroke">{{ currentWeather.location }}</h4>
