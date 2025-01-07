@@ -10,20 +10,15 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "platform": "node",
+        "target": "node",
         "outputPath": "dist/apps/sportadvies-api",
-        "format": ["cjs"],
-        "bundle": false,
+        "compiler": "tsc",
         "main": "apps/sportadvies-api/src/main.ts",
         "tsConfig": "apps/sportadvies-api/tsconfig.app.json",
         "assets": ["apps/sportadvies-api/src/assets"],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
+        "webpackConfig": "apps/data-api/webpack.config.js",
+        "isolatedConfig": true,
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},
