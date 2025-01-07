@@ -1,44 +1,38 @@
 {
   "name": "sportadvies-api",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/sportadvies-api/src",
   "projectType": "application",
-  "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "platform": "node",
-        "outputPath": "dist/apps/sportadvies-api",
+        "target": "node",
         "compiler": "tsc",
+        "outputPath": "dist/apps/sportadvies-api",
         "main": "apps/sportadvies-api/src/main.ts",
         "tsConfig": "apps/sportadvies-api/tsconfig.app.json",
         "assets": ["apps/sportadvies-api/src/assets"],
-        "webpackConfig": "apps/data-api/webpack.config.js",
         "isolatedConfig": true,
+        "webpackConfig": "apps/sportadvies-api/webpack.config.js",
         "generatePackageJson": true
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "fileReplacements": []
+        },
         "production": {
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
+          "fileReplacements": []
         }
       }
     },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": ["build"],
       "options": {
-        "buildTarget": "sportadvies-api:build",
-        "runBuildTargetDependencies": false
+        "buildTarget": "sportadvies-api:build"
       },
       "configurations": {
         "development": {
@@ -49,10 +43,27 @@
         }
       }
     },
-    "test": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
       "options": {
+        "lintFilePatterns": ["apps/sportadvies-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/sportadvies-api/jest.config.ts",
         "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
       }
     }
-  }
+  },
+  "tags": []
 }
