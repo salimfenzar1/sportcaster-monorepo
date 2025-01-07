@@ -1,49 +1,94 @@
-name: Azure Static Web Apps CI/CD
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy a Node.js app and an Angular app to Azure
 
 on:
   push:
     branches:
-      - master
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - master
+      - main
+  workflow_dispatch:
 
 jobs:
-  build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  build:
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-          lfs: false
 
-      - name: Setup Node.js
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '18.17.0'
+          node-version: '18.x'
 
-      - name: Install Dependencies
-        run: npm install
+      - name: npm install, build, test
+        run: |
+          npm install
+          npm test -- --watch=false --no-cache
+          npm run build -- --configuration=production
 
-      - name: Build Application
-        run: npm run build -- --configuration=production
+      - name: Zip artifacts for deployment
+        run: |
+          echo ${GITHUB_WORKSPACE}
+          cd ${GITHUB_WORKSPACE}/dist/apps/Sportcaster/ && zip ${GITHUB_WORKSPACE}/sportcaster-release.zip ./* -r
+          cd ${GITHUB_WORKSPACE}/dist/apps/sportadvies-api/ && zip ${GITHUB_WORKSPACE}/sportadviesapi-release.zip ./* -r
 
-      - name: Deploy Frontend (Sportcaster)
+      - name: Upload Sportcaster artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: sportcaster
+          path: sportcaster-release.zip
+
+      - name: Upload Sportadvies API artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: sportadviesapi
+          path: sportadviesapi-release.zip
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+
+    steps:
+      - name: Download Sportcaster artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: sportcaster
+
+      - name: Unzip Sportcaster artifact
+        run: unzip sportcaster-release.zip
+
+      - name: Deploy to static Azure Web App
         id: deployfrontend
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_BUSH_0EE755B10 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
           app_location: '/'
           api_location: ''
           output_location: 'dist/apps/Sportcaster'
 
-      - name: Deploy Sportadvies API
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+
+    steps:
+      - name: Download Sportadvies API artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: sportadviesapi
+
+      - name: Unzip Sportadvies API artifact
+        run: unzip sportadviesapi-release.zip
+
+      - name: Install dependencies for Sportadvies API
+        run: npm install
+
+      - name: Deploy Sportadvies API to Azure Web App
         id: deploysportadviesapi
         uses: azure/webapps-deploy@v2
         with:
@@ -51,15 +96,3 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.SPORTADVIES_PUBLISHPROFILE }}
           package: '.'
-
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_LEMON_BUSH_0EE755B10 }}
-          action: 'close'

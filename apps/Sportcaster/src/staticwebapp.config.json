@@ -1,14 +1,25 @@
 {
-    "routes": [
-      {
-        "route": "/*",
-        "serve": "/index.html",
-        "statusCode": 200
-      }
-    ],
-    "navigationFallback": {
-      "rewrite": "/index.html",
-      "exclude": ["/assets/*", "/static/*"]
+  "routes": [
+    {
+      "route": "/*",
+      "serve": "/index.html",
+      "statusCode": 200
     }
-  }
-  
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/static/*"]
+  },
+  "redirects": [
+    {
+      "route": "/",
+      "redirect": "https://www.sport-caster.nl",
+      "statusCode": 301
+    },
+    {
+      "route": "/:path*",
+      "redirect": "https://www.sport-caster.nl/:path*",
+      "statusCode": 301
+    }
+  ]
+}
