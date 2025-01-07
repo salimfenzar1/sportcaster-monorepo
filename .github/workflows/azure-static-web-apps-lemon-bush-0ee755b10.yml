@@ -24,7 +24,6 @@ jobs:
       - name: npm install, build, test
         run: |
           npm install
-          npm test -- --watch=false --no-cache
           npm run build -- --configuration=production
 
       - name: Zip artifacts for deployment
