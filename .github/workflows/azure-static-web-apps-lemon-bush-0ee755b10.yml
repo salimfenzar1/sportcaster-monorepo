@@ -30,7 +30,7 @@ jobs:
         run: |
           echo ${GITHUB_WORKSPACE}
           cd ${GITHUB_WORKSPACE}/dist/apps/Sportcaster/ && zip ${GITHUB_WORKSPACE}/sportcaster-release.zip ./* -r
-          cd ${GITHUB_WORKSPACE}/dist/apps/sportadvies-api/ && zip ${GITHUB_WORKSPACE}/sportadviesapi-release.zip ./* -r
+          cd ${GITHUB_WORKSPACE}/dist/apps/sportadviesapi/ && zip ${GITHUB_WORKSPACE}/sportadviesapi-release.zip ./* -r
 
       - name: Upload Sportcaster artifact for deployment job
         uses: actions/upload-artifact@v3
