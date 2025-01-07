@@ -98,3 +98,5 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.SPORTADVIES_PUBLISHPROFILE }}
           package: '.'
+        env:
+          SYSTEM_DEBUG: true
