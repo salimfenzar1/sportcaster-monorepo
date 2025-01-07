@@ -94,7 +94,7 @@ jobs:
         id: deploysportadviesapi
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'sportadviesapi'
+          app-name: 'sportcaster-api'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.SPORTADVIES_PUBLISHPROFILE }}
+          publish-profile: ${{ secrets.SPORTADVIESAPI_PUBLISHPROFILE }}
           package: '.'
