@@ -50,7 +50,7 @@ jobs:
           app-name: 'sportadviesapi'
           slot-name: 'Production'
           publish-profile: ${{ secrets.SPORTADVIES_PUBLISHPROFILE }}
-          package: 'dist/apps/sportadvies-api'
+          package: 'dist/apps/sportadviesapi'
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
