@@ -23,6 +23,10 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  navigateToLogin(): void {
+    this.router.navigate(['/login']);
+  }
+
   register(): void {
     console.log('Attempting to register with data:', this.registrationData);
 

@@ -21,23 +21,11 @@
 
     <!-- Menu items -->
     <div class="collapse navbar-collapse" id="navbarContent">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a routerLink="/" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/weather" class="nav-link">Weer</a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/sports" class="nav-link">Sportadvies</a>
-        </li>
-      </ul>
-
       <!-- Login / Register / Logout -->
-      <div class="d-flex align-items-center">
+      <div style="margin-left: auto;" class=" align-items-center">
         <div *ngIf="!isLoggedIn(); else loggedIn">
-          <a routerLink="/login" class="btn btn-outline-primary me-2">Login</a>
-          <a routerLink="/register" class="btn btn-primary">Registreer</a>
+          <a routerLink="/login" class="btn btn-outline-primary me-2 wideButton">Login</a>
+          <a routerLink="/register" class="btn btn-primary wideButton">Registreer</a>
         </div>
         <ng-template #loggedIn>
           <button (click)="logout()" class="btn btn-outline-danger">Logout</button>

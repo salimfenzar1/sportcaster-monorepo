@@ -39,5 +39,9 @@ export class LoginComponent {
             }
         });
     }
+    navigateToRegister(): void {
+        this.router.navigate(['/register']);
+      }
+      
     
 }

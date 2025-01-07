@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IUserCredentials } from '../../../../../shared/api/src/lib/models/auth.interface';
-import { IUserIdentity } from '../../../../../shared/api/src/lib/models/user.interface';
-import { environment } from '../../../../../../libs/shared/util-env/src/lib/environment';
+import { IUserIdentity, IUserCredentials } from '@libs/shared/api/src';
+import { environment } from '@libs/shared/util-env/src';
 
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    private apiUrl = `${environment.dataApiUrl}/auth`; // Backend URL
+    private apiUrl = `${environment.dataApiUrl}/auth`; 
 
     constructor(private http: HttpClient) {}
 
