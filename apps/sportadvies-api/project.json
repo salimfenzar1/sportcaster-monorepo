@@ -10,7 +10,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "target": "node",
+        "platform": "node",
         "outputPath": "dist/apps/sportadvies-api",
         "compiler": "tsc",
         "main": "apps/sportadvies-api/src/main.ts",
