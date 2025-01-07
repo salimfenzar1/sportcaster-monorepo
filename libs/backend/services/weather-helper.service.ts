@@ -46,7 +46,6 @@ import { Observable, forkJoin } from 'rxjs';
     }
   
     getWeatherIcon(condition: string): string {
-        // console.log(condition)
       const icons: { [key: string]: string } = {
         Sunny: 'assets/weather-icons/sunny.png',
         Clear: 'assets/weather-icons/sunny.png',

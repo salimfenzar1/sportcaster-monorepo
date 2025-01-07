@@ -67,8 +67,8 @@ export class DashboardComponent implements OnInit {
     const location = this.enteredLocation.trim();
     this.isCurrentLocation = false;
 
-    this.weatherHelperService.getLocationDetails(location).subscribe(
-      (response) => {
+    this.weatherHelperService.getLocationDetails(location).subscribe({
+      next: (response) => {
         if (response && response.length > 0) {
           const latitude = response[0].lat;
           const longitude = response[0].lon;
@@ -77,17 +77,17 @@ export class DashboardComponent implements OnInit {
           alert('Geen locatie gevonden voor deze stad.');
         }
       },
-      (error) => {
+      error: (error) => {
         console.error('Fout bij het ophalen van coördinaten:', error);
         alert('Er is een fout opgetreden bij het zoeken naar deze locatie.');
-      }
-    );
+      },
+    });    
   }
 
   selectCity(city: any): void {
     this.enteredLocation = city.name;
-    this.suggestedCities = []; // Verwijder suggesties
-    this.searchWeather(); // Zoek weergegevens
+    this.suggestedCities = []; 
+    this.searchWeather(); 
   }
   
 
@@ -97,38 +97,32 @@ export class DashboardComponent implements OnInit {
       return;
     }
   
-    this.citySuggestionService.getCitySuggestions(this.enteredLocation).subscribe(
-      (response) => {
-        console.log('Geoapify API Response:', response); //  Check de API output in de console
-  
+    this.citySuggestionService.getCitySuggestions(this.enteredLocation).subscribe({
+      next: (response) => {
+        console.log('Geoapify API Response:', response);
         this.suggestedCities = response.map((city: any) => ({
           name: `${city.name}, ${city.country}`
         }));
       },
-      (error) => {
+      error: (error) => {
         console.error('Fout bij ophalen van suggesties:', error);
-      }
-    );
+      },
+    });    
   }
-  
-  
-  
-  
-  
 
   private updateWeatherData(latitude: number, longitude: number): void {
-    this.weatherHelperService.getWeatherData(latitude, longitude).subscribe(
-      (data) => {
+    this.weatherHelperService.getWeatherData(latitude, longitude).subscribe({
+      next: (data) => {
         const locationComponents = data.location.results[0].components;
-
+  
         const cityOrVillage =
           locationComponents.city ||
           locationComponents.town ||
           locationComponents.village ||
           'Onbekende plaats';
-
+  
         const country = locationComponents.country || 'Onbekend land';
-
+  
         this.currentWeather = {
           temperature: `${Math.round(data.currentWeather.main.temp)}°C`,
           feelsLike: `${Math.round(data.currentWeather.main.feels_like)}°C`,
@@ -138,7 +132,7 @@ export class DashboardComponent implements OnInit {
           precipitation: data.currentWeather.rain ? `${data.currentWeather.rain['1h']} mm` : '0 mm',
           location: `${cityOrVillage}, ${country}`,
         };
-
+  
         this.weatherForecast = data.forecast.list.slice(0, 3).map((forecast: any) => ({
           time: new Date(forecast.dt_txt).toLocaleTimeString('nl-NL', {
             hour: '2-digit',
@@ -148,15 +142,15 @@ export class DashboardComponent implements OnInit {
           windSpeed: `${Math.round(forecast.wind.speed * 3.6)} km/h`,
           precipitation: forecast.rain ? `${forecast.rain['3h']} mm` : '0 mm',
         }));
-
+  
         this.currentWeatherCondition = this.weatherHelperService.determineBackgroundCondition(
           this.currentWeather.condition
         );
       },
-      (error) => {
+      error: (error) => {
         console.error('Fout bij het ophalen van de weergegevens:', error);
         alert('Er is een fout opgetreden bij het ophalen van de weergegevens.');
-      }
-    );
-  }
+      },
+    });
+  }  
 }

@@ -19,14 +19,12 @@ export class WeatherService {
     );
   }
 
-  // Huidig weer ophalen op basis van coördinaten
   getWeatherByCoordinates(latitude: number, longitude: number): Observable<any> {
     return this.http.get(
       `${this.currentWeatherUrl}?lat=${latitude}&lon=${longitude}&units=metric&appid=${this.apiKey}`
     );
   }
 
-  // Weersvoorspelling ophalen op basis van coördinaten
   getForecastByCoordinates(latitude: number, longitude: number): Observable<any> {
     return this.http.get(
       `${this.forecastUrl}?lat=${latitude}&lon=${longitude}&units=metric&appid=${this.apiKey}`
@@ -36,5 +34,5 @@ export class WeatherService {
   getCitySuggestions(query: string): Observable<any> {
     return this.http.get(`${this.geocodingUrl}?q=${query}&limit=5&appid=${this.apiKey}`);
   }
-  
+
 }

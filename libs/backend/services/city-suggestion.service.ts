@@ -7,7 +7,7 @@ import { map, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CitySuggestionService {
-  private apiKey = 'c77e12bee0954e1aa7516dde68aa7914'; // Vervang met je eigen API Key
+  private apiKey = 'c77e12bee0954e1aa7516dde68aa7914'; 
   private apiUrl = 'https://api.geoapify.com/v1/geocode/autocomplete';
 
   constructor(private http: HttpClient) {}
@@ -17,11 +17,11 @@ export class CitySuggestionService {
 
     return this.http.get<{ results: any[] }>(url).pipe(
       map((response) => {
-        console.log('Geoapify API Response:', response); // Debugging
+        console.log('Geoapify API Response:', response); 
 
         if (!response || !Array.isArray(response.results)) { 
           console.error('Fout: Geen resultaten gevonden in API response.', response);
-          return []; // Geef een lege array terug als er geen resultaten zijn
+          return []; 
         }
 
         const uniqueCities = response.results
@@ -30,15 +30,15 @@ export class CitySuggestionService {
             country: place.country || 'Onbekend land'
           }))
           .filter((value, index, self) =>
-            index === self.findIndex((t) => t.name === value.name && t.country === value.country) // Verwijder duplicaten
+            index === self.findIndex((t) => t.name === value.name && t.country === value.country) 
           );
 
-        console.log('Unieke stadssuggesties:', uniqueCities); // Debug de unieke lijst
+        console.log('Unieke stadssuggesties:', uniqueCities); 
         return uniqueCities;
       }),
       catchError((error) => {
         console.error('Fout bij ophalen van suggesties:', error);
-        return []; // Geeft een lege lijst terug in geval van een fout
+        return []; 
       })
     );
   }
