@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "nx run-many -t build"
+    "build": "nx run-many -t build",
+    "start": "node dist/apps/sportadvies-api/main.js"
   },
   "private": true,
   "dependencies": {
