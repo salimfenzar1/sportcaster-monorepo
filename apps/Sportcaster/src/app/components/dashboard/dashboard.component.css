@@ -75,6 +75,20 @@ button i {
   color: grey;
 
 }
+.list-group {
+  position: absolute;
+  z-index: 1050; /* Zorg ervoor dat het boven andere elementen blijft */
+  background: white; /* Achtergrondkleur om tekst leesbaar te maken */
+  border: 1px solid #ccc; /* Optionele rand */
+  width: 100%; /* Zorgt ervoor dat de dropdown net zo breed is als het inputveld */
+  max-height: 200px; /* Voorkomt dat de lijst te groot wordt */
+  overflow-y: auto; /* Scroll mogelijk maken als er veel resultaten zijn */
+}
+
+.list-group-item {
+  cursor: pointer; /* Cursor verandert naar pointer bij hover */
+  padding: 10px;
+}
 
 
 @media (max-width: 768px) {
@@ -97,6 +111,7 @@ button i {
       margin-top: .5rem !important;
     }
 }
+
 
 
 
