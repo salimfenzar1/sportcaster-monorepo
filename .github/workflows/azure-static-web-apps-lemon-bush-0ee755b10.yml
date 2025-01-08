@@ -21,9 +21,13 @@ jobs:
         with:
           node-version: '18.x'
 
+      - name: Reset NX cache and install dependencies
+        run: |
+            nx reset
+            npm install
+
       - name: npm install, build, test
         run: |
-          npm install
           npm run build -- --configuration=production --verbose
 
       - name: Debug Build Output
