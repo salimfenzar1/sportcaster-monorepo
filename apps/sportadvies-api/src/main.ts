@@ -10,7 +10,13 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
-  app.enableCors();
+  app.enableCors({
+    origin: ['https://sportcaster-frontend.azurewebsites.net'], // Alleen je frontend toestaan
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
+  
 
   app.useGlobalPipes(
     new ValidationPipe({

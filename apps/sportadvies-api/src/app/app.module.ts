@@ -2,6 +2,8 @@ import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { environment } from '@libs/shared/util-env/src'; 
+import { UsersModule } from '@libs/backend/user/src/lib/users.module';
+import { AuthModule } from '@libs/backend/auth/src/lib/auth.module';
 
 @Module({
   imports: [
@@ -9,6 +11,7 @@ import { environment } from '@libs/shared/util-env/src';
         load: [() => environment],
         isGlobal: true, 
       }),
+      AuthModule,
     MongooseModule.forRootAsync({
         imports: [ConfigModule],
         useFactory: async (configService: ConfigService) => ({
@@ -25,6 +28,8 @@ import { environment } from '@libs/shared/util-env/src';
         }),
         inject: [ConfigService],
       }),
+      UsersModule,
+     
   ],
   controllers: [],
   providers: [],
