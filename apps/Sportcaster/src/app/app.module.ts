@@ -9,7 +9,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { appRoutes } from './app.routes';
 import { HeaderComponent } from './components/header/header.component';
 
-// ✅ Standalone componenten moeten alleen in `imports[]` staan, NIET in `declarations[]`
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from '@libs/frontend/features/src/lib/auth/auth.service';
@@ -23,9 +22,10 @@ import { AuthService } from '@libs/frontend/features/src/lib/auth/auth.service';
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {
+      initialNavigation: 'enabledBlocking'
+  }),
 
-    // ✅ Standalone componenten importeren HIER
     RegisterComponent,
     LoginComponent
   ],
@@ -33,6 +33,7 @@ import { AuthService } from '@libs/frontend/features/src/lib/auth/auth.service';
     provideHttpClient(), 
     AuthService
   ],
+  exports: [RouterModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
