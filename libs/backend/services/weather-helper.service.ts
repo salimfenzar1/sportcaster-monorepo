@@ -52,6 +52,7 @@ import { Observable, forkJoin } from 'rxjs';
         Rain: 'assets/weather-icons/rainy.png',
         Cloudy: 'assets/weather-icons/cloudy.png',
         Snowy: 'assets/weather-icons/snowy.png',
+        Snow: 'assets/weather-icons/snowy.png',
         Fog: 'assets/weather-icons/misty.png',
         Mist: 'assets/weather-icons/misty.png',
       };
