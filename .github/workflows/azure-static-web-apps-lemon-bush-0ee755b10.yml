@@ -23,7 +23,6 @@ jobs:
 
       - name: npm install, build, test
         run: |
-          npx nx reset
           npm install
           npm run build -- --configuration=production --verbose
 
