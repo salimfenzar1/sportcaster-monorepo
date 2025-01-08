@@ -24,7 +24,8 @@ jobs:
       - name: npm install, build, test
         run: |
           npm install
-          npm run build -- --configuration=production
+          nx reset
+          npm run build -- --configuration=production --verbose
 
       - name: Debug Build Output
         run: ls -R ${GITHUB_WORKSPACE}/dist
