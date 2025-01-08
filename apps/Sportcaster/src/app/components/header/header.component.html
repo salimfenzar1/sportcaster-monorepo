@@ -22,12 +22,13 @@
     <!-- Menu items -->
     <div class="collapse navbar-collapse" id="navbarContent">
       <!-- Login / Register / Logout -->
-      <div style="margin-left: auto;" class=" align-items-center">
+      <div style="margin-left: auto;" class="align-items-center">
         <div *ngIf="!isLoggedIn(); else loggedIn">
           <a routerLink="/login" class="btn btn-outline-primary me-2 wideButton">Login</a>
           <a routerLink="/register" class="btn btn-primary wideButton">Registreer</a>
         </div>
         <ng-template #loggedIn>
+          <span class="me-3">Welkom {{ username }}</span>
           <button (click)="logout()" class="btn btn-outline-danger">Logout</button>
         </ng-template>
       </div>
