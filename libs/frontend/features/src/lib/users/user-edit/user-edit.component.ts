@@ -79,21 +79,7 @@ export class UserEditComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['/user']);
+    this.router.navigate(['/user/details']);
   }
 
-  deleteUser(): void {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.userService.deleteUser(this.userId).subscribe({
-        next: () => {
-          console.log('User deleted successfully!');
-          this.router.navigate(['/user/details']);
-        },
-        error: (err) => {
-          console.error('Error deleting user:', err);
-          this.errorMessage = 'An error occurred while deleting the user.';
-        },
-      });
-    }
-  }
 }
