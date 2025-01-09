@@ -29,6 +29,7 @@
         </div>
         <ng-template #loggedIn>
           <span class="me-3">Welkom {{ username }}</span>
+          <a routerLink="/user/details" class="btn btn-outline-secondary me-2 wideButton">My Profile</a>
           <button (click)="logout()" class="btn btn-outline-danger">Logout</button>
         </ng-template>
       </div>

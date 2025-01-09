@@ -12,6 +12,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from '@libs/frontend/features/src/lib/auth/auth.service';
+import { FeaturesModule } from '@libs/frontend/features/src/lib/features.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AuthService } from '@libs/frontend/features/src/lib/auth/auth.service';
   imports: [
     BrowserModule,
     FormsModule,
+    FeaturesModule,
     RouterModule.forRoot(appRoutes, {
       initialNavigation: 'enabledBlocking'
   }),

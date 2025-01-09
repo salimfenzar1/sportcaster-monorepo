@@ -3,6 +3,7 @@ import { IUserInfo } from '../../../../../../shared/api/src';
 import { UserService } from '../user.service';
 
 @Component({
+  standalone: false,
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   styles: []
