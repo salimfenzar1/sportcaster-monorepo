@@ -9,22 +9,25 @@ import { UserService } from '../user.service';
   styles: []
 })
 export class UserDetailsComponent implements OnInit {
-  userDetails: IUserInfo | null = null; // Variabele om gebruikersdetails op te slaan
-  errorMessage: string | null = null; // Voor eventuele foutmeldingen
+  userDetails: IUserInfo | null = null;
+  errorMessage: string | null = null;
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    // Haal de details van de ingelogde gebruiker op
     this.getCurrentUserDetails();
   }
 
-  // Ophalen van de gegevens van de ingelogde gebruiker
   getCurrentUserDetails(): void {
     this.userService.getCurrentUser().subscribe({
       next: (response: any) => {
-        this.userDetails = response.results;
-        console.log('Loaded user details:', response.results);
+        console.log('Full API Response:', response);
+        if (response) {
+          this.userDetails = response; // ✅ Direct opslaan
+          console.log('Loaded user details:', this.userDetails);
+        } else {
+          console.error('No user details found in response:', response);
+        }
       },
       error: (err) => {
         this.errorMessage = 'Failed to load user details.';

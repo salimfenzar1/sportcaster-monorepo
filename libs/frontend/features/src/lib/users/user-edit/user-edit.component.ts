@@ -5,6 +5,7 @@ import { UserService } from '../user.service';
 import { IUserInfo } from '../../../../../../shared/api/src';
 
 @Component({
+  standalone: false,
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
   styles: [],

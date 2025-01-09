@@ -3,6 +3,7 @@ import { IUserInfo } from "../../../../../../shared/api/src";
 import { UserService } from '../user.service';
 
 @Component({
+  standalone: false,
   selector: 'app-root',
   templateUrl: './user-list.component.html',
 })
