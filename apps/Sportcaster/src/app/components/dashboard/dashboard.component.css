@@ -115,4 +115,53 @@ button i {
 
 
 
+/* Modal customizations */
+.modal-content {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.modal-header {
+  border-bottom: 0;
+}
+
+.modal-footer {
+  border-top: 0;
+}
+
+/* Recommendations styling */
+.recommendations-container {
+  background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.card {
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-body {
+  font-size: 1rem;
+}
+
+.card-footer {
+  border-top: 0;
+}
+
+.btn-outline-primary {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
 

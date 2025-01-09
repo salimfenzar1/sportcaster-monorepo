@@ -183,85 +183,122 @@
    <div class="d-flex justify-content-center align-items-center mt-5">
     <button
       class="btn btn-lg btn-primary py-3 px-5"
-      style="font-size: 1.5rem"
+      style="font-size: 1.3rem"
       (click)="openPreferencesModal()"
     >
       Stel sportvoorkeuren in
     </button>
   </div>
 
-    <!-- Voorkeuren pop-up -->
-    <div class="modal" [class.show]="showModal" [ngStyle]="{ display: showModal ? 'block' : 'none' }">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Sportvoorkeuren</h5>
-            <button type="button" class="btn-close" (click)="closePreferencesModal()"></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <label for="indoor" class="form-label">Binnen of Buiten?</label>
-                <select id="indoor" class="form-select" [(ngModel)]="preferences.indoor" name="indoor">
-                  <option [value]="null">Geen voorkeur</option>
-                  <option [value]="true">Binnen</option>
-                  <option [value]="false">Buiten</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="equipment" class="form-label">Benodigdheden</label>
-                <input
-                  type="text"
-                  id="equipment"
-                  class="form-control"
-                  placeholder="Bijvoorbeeld: Mat, Fiets"
-                  [(ngModel)]="preferences.equipment"
-                  name="equipment"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="intensity" class="form-label">Intensiteit</label>
-                <select id="intensity" class="form-select" [(ngModel)]="preferences.intensity" name="intensity">
-                  <option [value]="''">Geen voorkeur</option>
-                  <option value="Low">Laag</option>
-                  <option value="Moderate">Gemiddeld</option>
-                  <option value="High">Hoog</option>
-                </select>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closePreferencesModal()">Annuleer</button>
-            <button type="button" class="btn btn-primary" (click)="submitPreferences()">Opslaan</button>
-          </div>
-        </div>
-      </div>
+   <!-- Voorkeuren pop-up -->
+<div
+class="modal fade show"
+tabindex="-1"
+[class.show]="showModal"
+[ngStyle]="{ display: showModal ? 'block' : 'none' }"
+role="dialog"
+>
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content shadow-lg">
+    <div class="modal-header bg-primary text-white">
+      <h5 class="modal-title">Sportvoorkeuren</h5>
+      <button
+        type="button"
+        class="btn-close text-white"
+        (click)="closePreferencesModal()"
+        aria-label="Close"
+      ></button>
     </div>
-
-   <!-- Aanbevolen sporten -->
-   <div style="margin-bottom: 10rem;" *ngIf="sportsRecommendations.length > 0" class="row g-4 mt-4">
-    <div class="col-md-12">
-      <h3 class="mb-3">Aanbevolen Sporten</h3>
-      <div class="row">
-        <div
-          class="col-12 col-md-4"
-          *ngFor="let sport of sportsRecommendations.slice(0, 3)"
-        >
-          <div class="card shadow h-100">
-            <div class="card-body text-center">
-              <h5 class="card-title text-primary">{{ sport.name }}</h5>
-              <p class="card-text">
-                <strong>Benodigdheden:</strong>
-                {{ sport.equipment || 'Geen' }}<br />
-                <strong>Intensiteit:</strong>
-                {{ sport.intensity }}<br />
-                <strong>Binnen of Buiten:</strong>
-                {{ sport.indoor ? 'Binnen' : 'Buiten' }}
-              </p>
-            </div>
-          
-          </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-4">
+          <label for="indoor" class="form-label">Binnen of Buiten?</label>
+          <select
+            id="indoor"
+            class="form-select"
+            [(ngModel)]="preferences.indoor"
+            name="indoor"
+          >
+            <option [value]="null">Geen voorkeur</option>
+            <option [value]="true">Binnen</option>
+            <option [value]="false">Buiten</option>
+          </select>
         </div>
+        <div class="mb-4">
+          <label for="equipment" class="form-label">Benodigdheden</label>
+          <input
+            type="text"
+            id="equipment"
+            class="form-control"
+            placeholder="Bijvoorbeeld: Mat, Fiets"
+            [(ngModel)]="preferences.equipment"
+            name="equipment"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="intensity" class="form-label">Intensiteit</label>
+          <select
+            id="intensity"
+            class="form-select"
+            [(ngModel)]="preferences.intensity"
+            name="intensity"
+          >
+            <option [value]="''">Geen voorkeur</option>
+            <option value="Low">Laag</option>
+            <option value="Moderate">Gemiddeld</option>
+            <option value="High">Hoog</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer d-flex justify-content-between">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="closePreferencesModal()"
+      >
+        Annuleer
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary px-4 py-2"
+        (click)="submitPreferences()"
+      >
+        Opslaan
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Aanbevolen sporten -->
+<div
+*ngIf="sportsRecommendations.length > 0"
+class="recommendations-container mt-5"
+>
+<h3 class="text-center text-primary mb-4">Aanbevolen Sporten</h3>
+<div class="row g-4">
+  <div
+    class="col-md-4"
+    *ngFor="let sport of sportsRecommendations.slice(0, 3)"
+  >
+    <div class="card shadow-lg border-0">
+      <div class="card-header text-white bg-primary text-center">
+        <h5 class="card-title mb-0">{{ sport.name }}</h5>
+      </div>
+      <div class="card-body text-center">
+        <p class="card-text">
+          <strong>Benodigdheden:</strong> {{ sport.equipment || 'Geen' }}
+        </p>
+        <p class="card-text">
+          <strong>Intensiteit:</strong> {{ sport.intensity }}
+        </p>
+        <p class="card-text">
+          <strong>Binnen of Buiten:</strong>
+          {{ sport.indoor ? 'Binnen' : 'Buiten' }}
+        </p>
+      </div>
+      <div class="card-footer bg-light text-center">
       </div>
     </div>
   </div>
