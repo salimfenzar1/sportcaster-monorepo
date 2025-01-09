@@ -24,6 +24,9 @@
       <!-- Login / Register / Profiel -->
       <div class="ms-auto d-flex align-items-center">
         <!-- Niet ingelogd -->
+      <!-- Login / Register / Profiel -->
+      <div class="ms-auto d-flex align-items-center">
+        <!-- Niet ingelogd -->
         <div *ngIf="!isLoggedIn(); else loggedIn">
           <a routerLink="/login" class="btn btn-outline-primary me-2 wideButton">
             <i class="bi bi-box-arrow-in-right"></i> Login
@@ -31,7 +34,15 @@
           <a routerLink="/register" class="btn btn-primary wideButton">
             <i class="bi bi-person-plus"></i> Registreer
           </a>
+          <a routerLink="/login" class="btn btn-outline-primary me-2 wideButton">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+          </a>
+          <a routerLink="/register" class="btn btn-primary wideButton">
+            <i class="bi bi-person-plus"></i> Registreer
+          </a>
         </div>
+
+        <!-- Ingelogd -->
 
         <!-- Ingelogd -->
         <ng-template #loggedIn>
