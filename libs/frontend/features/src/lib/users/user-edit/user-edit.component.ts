@@ -32,7 +32,7 @@ export class UserEditComponent implements OnInit {
         // Laad de usergegevens en initialiseer het formulier
         this.userService.getUserById(this.userId).subscribe({
           next: (response: any) => {
-            const user = response.results; // Controleer of dit klopt met je API-respons
+            const user = response; // Controleer of dit klopt met je API-respons
             this.initializeForm(user);
           },
           error: (err) => {

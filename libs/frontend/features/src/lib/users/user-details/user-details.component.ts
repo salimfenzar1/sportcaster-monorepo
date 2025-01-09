@@ -23,7 +23,7 @@ export class UserDetailsComponent implements OnInit {
       next: (response: any) => {
         console.log('Full API Response:', response);
         if (response) {
-          this.userDetails = response; // ✅ Direct opslaan
+          this.userDetails = response; // Direct opslaan
           console.log('Loaded user details:', this.userDetails);
         } else {
           console.error('No user details found in response:', response);
