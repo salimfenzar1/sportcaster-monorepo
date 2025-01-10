@@ -169,29 +169,5 @@
         </div>
       </div>
     </div>
-
-    <!-- Aanbevolen sporten -->
-    <div *ngIf="weatherForecast" class="row g-4 mt-4">
-      <div class="col-md-12">
-        <div class="card text-dark bg-light shadow">
-          <div class="card-header">Aanbevolen sporten</div>
-          <div class="card-body">
-            <ul class="list-group list-group-flush">
-              <li
-                class="list-group-item"
-                *ngFor="let sport of sportsRecommendations"
-              >
-                <h5>{{ sport.name }}</h5>
-                <p>
-                  <strong>Duration:</strong> {{ sport.duration }}<br />
-                  <strong>Intensity:</strong> {{ sport.intensity }}<br />
-                  <strong>Indoor:</strong> {{ sport.indoor ? 'Yes' : 'No' }}
-                </p>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
