@@ -22,20 +22,6 @@ export interface ISport {
     equipment?: string[];
 }
 
-export interface ICreateSport {
-    name: string;
-    type: SportType;
-    duration: number;
-    intensity: SportIntensity;
-    equipment?: string[];
-}
 
-export interface IUpdateSport {
-    name?: string;
-    type?: SportType;
-    duration?: number;
-    intensity?: SportIntensity;
-    equipment?: string[];
-}
 
 export type IUpsertSport = ISport;

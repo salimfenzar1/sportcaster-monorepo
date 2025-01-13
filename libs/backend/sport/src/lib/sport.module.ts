@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { SportController } from './sport.controller';
-import { SportService } from './sport.service';
+import { SportController } from './sport/sport.controller';
+import { SportService } from './sport/sport.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Sport, SportSchema } from './sport.schema';
+import { Sport, SportSchema } from './sport/sport.schema';
 
 @Module({
     imports: [
