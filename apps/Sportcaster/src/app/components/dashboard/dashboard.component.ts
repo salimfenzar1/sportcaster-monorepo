@@ -11,13 +11,13 @@ import { CitySuggestionService } from '@libs/backend/services/city-suggestion.se
 export class DashboardComponent implements OnInit {
   currentWeather: any = null;
   weatherForecast: any = null;
-  currentWeatherCondition: string = ''; // Toevoegen van currentWeatherCondition
-  enteredLocation: string = '';
-  isCurrentLocation: boolean = true;
+  currentWeatherCondition = ''; // Toevoegen van currentWeatherCondition
+  enteredLocation = '';
+  isCurrentLocation = true;
   suggestedCities: any[] = [];
   sportsRecommendations: any[] = [];
-  showModal: boolean = false;
-  showForecast: boolean = false; 
+  showModal = false;
+  showForecast = false; 
 
 
   preferences = {
