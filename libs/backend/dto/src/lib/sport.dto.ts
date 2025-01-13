@@ -2,6 +2,11 @@ import { IsNotEmpty, IsString, IsNumber, IsOptional, IsEnum, IsArray } from 'cla
 import { SportType, SportIntensity } from '../../../../shared/api/src';
 
 export class CreateSportDto {
+
+    @IsString()
+    @IsOptional()
+    _id: string = '';
+
     @IsString()
     @IsNotEmpty()
     name!: string;

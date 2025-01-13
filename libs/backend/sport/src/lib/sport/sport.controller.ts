@@ -1,9 +1,12 @@
 import {
     Body,
     Controller,
+
     Get,
     Param,
     Post,
+    Put,
+    UseGuards
 } from '@nestjs/common';
 import { SportService } from './sport.service';
 import { ISport } from '../../../../../shared/api/src';
@@ -24,7 +27,7 @@ export class SportController {
     }
 
     @Post()
-    create(@Body() sport: CreateSportDto): Promise<ISport> {
+    async create(@Body() sport: CreateSportDto): Promise<ISport> {
         return this.sportService.create(sport);
     }
 }
