@@ -20,4 +20,10 @@ export class SportService {
     async findOne(id: string): Promise<ISport | null> {
         return this.sportModel.findById(id).exec();
     }
+
+    async create(Sport: CreateSportDto): Promise<ISport> {
+        const createdItem = this.sportModel.create(Sport);
+        return createdItem;
+    }
+
 }
