@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { SportService } from './sport.service';
 import { ISport } from '../../../../../shared/api/src';
-import { CreateSportDto, UpdateSportDto } from '../../../../dto/src/lib/sport.dto';
+import { CreateSportDto } from '../../../../dto/src/lib/sport.dto';
 
 @Controller('sports')
 export class SportController {
@@ -26,5 +26,10 @@ export class SportController {
     @Get(':id')
     async findOne(@Param('id') id: string): Promise<ISport | null> {
         return this.sportService.findOne(id);
+    }
+
+    @Post()
+    create(@Body() sport: CreateSportDto): Promise<ISport> {
+        return this.sportService.create(sport);
     }
 }
