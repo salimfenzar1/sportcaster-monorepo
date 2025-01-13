@@ -11,7 +11,7 @@ export class Sport implements ISport {
     _id!: string;
 
     @Prop({ required: true, type: String })
-    name: string = '';
+    name = '';
 
     @Prop({ required: true, enum: SportType, type: String })
     type: SportType = SportType.Extreme;
