@@ -1,14 +1,9 @@
 import {
     Body,
     Controller,
-    Delete,
     Get,
-    HttpException,
-    HttpStatus,
     Param,
     Post,
-    Put,
-    UseGuards
 } from '@nestjs/common';
 import { SportService } from './sport.service';
 import { ISport } from '../../../../../shared/api/src';

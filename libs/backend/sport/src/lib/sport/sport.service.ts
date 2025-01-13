@@ -1,16 +1,13 @@
-import { Injectable, Logger, HttpException } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Sport, SportDocument } from './sport.schema';
+import { Model } from 'mongoose';
 import { ISport } from '../../../../../shared/api/src';
-import { CreateSportDto, UpdateSportDto } from '../../../../dto/src/lib/sport.dto';
+import { SportDocument } from './sport.schema';
 
 @Injectable()
 export class SportService {
-    private readonly logger: Logger = new Logger(SportService.name);
-
     constructor(
-        @InjectModel(Sport.name) private sportModel: Model<SportDocument>
+        @InjectModel('Sport') private readonly sportModel: Model<SportDocument>,
     ) {}
 
     async findAll(): Promise<ISport[]> {
@@ -21,9 +18,8 @@ export class SportService {
         return this.sportModel.findById(id).exec();
     }
 
-    async create(Sport: CreateSportDto): Promise<ISport> {
-        const createdItem = this.sportModel.create(Sport);
-        return createdItem;
+    async create(sport: ISport): Promise<ISport> {
+        const createdSport = new this.sportModel(sport);
+        return createdSport.save();
     }
-
 }
