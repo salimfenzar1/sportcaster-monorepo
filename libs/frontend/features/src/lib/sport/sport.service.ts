@@ -9,20 +9,18 @@ import { environment } from '@libs/shared/util-env/src';
   providedIn: 'root',
 })
 export class SportService {
-  private apiUrl = `${environment.dataApiUrl}/sports`; // Backend API URL
+  private apiUrl = `${environment.dataApiUrl}/sports`; 
 
-  private sportsSubject = new BehaviorSubject<ISport[] | null>(null); // Houdt een lijst van sporten bij
-  public sports$ = this.sportsSubject.asObservable(); // Observable om te abonneren op sportgegevens
+  private sportsSubject = new BehaviorSubject<ISport[] | null>(null); 
+  public sports$ = this.sportsSubject.asObservable(); 
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Haal alle sporten op van de backend
-   */
+
   findAll(): Observable<ISport[]> {
     return this.http.get<ISport[]>(this.apiUrl).pipe(
       tap((sports: ISport[]) => {
-        this.sportsSubject.next(sports); // Werk de BehaviorSubject bij met de nieuwe sportenlijst
+        this.sportsSubject.next(sports);
       })
     );
   }
@@ -43,7 +41,7 @@ export class SportService {
     return this.http.post<ISport>(this.apiUrl, sport).pipe(
       tap((newSport: ISport) => {
         const currentSports = this.sportsSubject.getValue() || [];
-        this.sportsSubject.next([...currentSports, newSport]); // Voeg de nieuwe sport toe aan de BehaviorSubject
+        this.sportsSubject.next([...currentSports, newSport]); 
       })
     );
   }
