@@ -4,10 +4,6 @@ import { SportType, SportIntensity } from '../../../../shared/api/src';
 export class CreateSportDto {
 
     @IsString()
-    @IsOptional()
-    _id: string = '';
-
-    @IsString()
     @IsNotEmpty()
     name!: string;
 

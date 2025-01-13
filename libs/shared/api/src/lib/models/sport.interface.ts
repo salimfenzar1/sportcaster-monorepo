@@ -14,7 +14,6 @@ export enum SportIntensity {
 }
 
 export interface ISport {
-    _id: string;
     name: string;
     type: SportType;
     duration: number;

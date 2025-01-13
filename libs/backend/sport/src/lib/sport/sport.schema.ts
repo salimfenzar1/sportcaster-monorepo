@@ -7,9 +7,6 @@ export type SportDocument = Sport & Document;
 
 @Schema()
 export class Sport implements ISport {
-    @IsMongoId()
-    _id!: string;
-
     @Prop({ required: true, type: String })
     name = '';
 
