@@ -224,4 +224,14 @@ button i {
   .forecast-precipitation {
     font-size: 0.9rem;
   }
+  .responsive-flex{
+    display: block !important;
+  }
+  .responsive-btn{
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+  }
 }
