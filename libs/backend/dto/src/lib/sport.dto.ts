@@ -21,9 +21,9 @@ export class CreateSportDto {
     @IsEnum(SportIntensity)
     @IsNotEmpty()
     intensity!: SportIntensity;
-
-    @IsArray()
+    
     @IsOptional()
+    @IsEnum(Equipment, { each: true })
     equipment?: Equipment[];
 }
 

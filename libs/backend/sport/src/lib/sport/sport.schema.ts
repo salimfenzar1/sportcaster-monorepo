@@ -7,7 +7,7 @@ export type SportDocument = Sport & Document;
 
 @Schema()
 export class Sport implements ISport {
-    @Prop({ required: true, type: String })
+    @Prop({ required: true, type: String, unique:true })
     name = '';
 
     @Prop({ required: true, enum: SportType, type: String })
@@ -22,7 +22,7 @@ export class Sport implements ISport {
     @Prop({ required: true, enum: SportIntensity, type: String })
     intensity!: SportIntensity;
 
-    @Prop({ required: false, enum: Equipment, type: String, default: [] })
+    @Prop({ required: false, enum: Equipment,  type: [String], default: [] })
     equipment!: Equipment[];
 }
 

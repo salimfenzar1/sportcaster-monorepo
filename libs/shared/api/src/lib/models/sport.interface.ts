@@ -24,6 +24,7 @@ export enum Equipment {
     Kayak = 'Kayak',
     Paddle = 'Paddle',
     LifeJacket = 'Life Jacket',
+    Racket = 'Racket'
   }
   
 
