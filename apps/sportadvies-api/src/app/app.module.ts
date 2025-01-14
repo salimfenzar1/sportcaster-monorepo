@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { environment } from '@libs/shared/util-env/src'; 
 import { UsersModule } from '@libs/backend/user/src/lib/users.module';
 import { AuthModule } from '@libs/backend/auth/src/lib/auth.module';
+import {SportModule} from '@libs/backend/sport/src/lib/sport.module'
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AuthModule } from '@libs/backend/auth/src/lib/auth.module';
         inject: [ConfigService],
       }),
       UsersModule,
+      SportModule
      
   ],
   controllers: [],

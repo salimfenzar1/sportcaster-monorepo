@@ -2,48 +2,55 @@
   <div class="container">
     <div class="row mb-4 justify-content-between align-items-center">
       <div class="col-auto"></div>
+ <!-- Knop om voorkeuren te openen -->
 
-      <!-- Zoekbalk met automatische suggesties -->
-      <div
-        class="col-auto mt-4 search-bar-container responsive-margin position-relative"
+ <div class="d-flex justify-content-end align-items-center mt-5 gap-3">
+  <!-- Knop voor sportvoorkeuren -->
+  <button
+    class="btn btn-primary"
+    (click)="openPreferencesModal()"
+  >
+    Stel sportvoorkeuren in
+  </button>
+
+  <!-- Zoekbalk met automatische suggesties -->
+  <div class="search-bar-container position-relative">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Zoek op stad"
+        [(ngModel)]="enteredLocation"
+        (keyup)="onCityInput()"
+        (keyup.enter)="searchWeather()"
+      />
+      <button
+        class="btn btn-primary"
+        type="button"
+        (click)="searchWeather()"
       >
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Zoek op stad"
-            [(ngModel)]="enteredLocation"
-            (keyup)="onCityInput()"
-            (keyup.enter)="searchWeather()"
-          />
-          <button
-            class="btn btn-primary"
-            type="button"
-            (click)="searchWeather()"
-          >
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
-
-        <!-- Dropdown voor stadssuggesties -->
-        <ul
-          *ngIf="suggestedCities.length"
-          class="list-group shadow"
-          style="position: absolute; top: 100%; left: 0; width: 100%"
-        >
-          <li
-            *ngFor="let city of suggestedCities"
-            class="list-group-item list-group-item-action"
-            (click)="selectCity(city)"
-            (keydown.enter)="selectCity(city)"
-            (keydown.space)="selectCity(city)"
-            tabindex="0"
-          >
-            {{ city.name }}
-          </li>
-        </ul>
-      </div>
+        <i class="bi bi-search"></i>
+      </button>
     </div>
+
+    <!-- Dropdown voor stadssuggesties -->
+    <ul
+      *ngIf="suggestedCities.length"
+      class="list-group shadow"
+      style="position: absolute; top: 100%; left: 0; width: 100%"
+    >
+      <li
+        *ngFor="let city of suggestedCities"
+        class="list-group-item list-group-item-action"
+        (click)="selectCity(city)"
+        tabindex="0"
+      >
+        {{ city.name }}
+      </li>
+    </ul>
+  </div>
+</div>
+
 
     <!-- Huidig weer -->
     <div *ngIf="currentWeather" class="row g-4 align-items-stretch">
@@ -178,17 +185,7 @@
                 </div>
                 </div>
                 </div>
-    <!-- Knop om voorkeuren te openen -->
-
-   <div class="d-flex justify-content-center align-items-center mt-5">
-    <button
-      class="btn btn-lg btn-primary py-3 px-5"
-      style="font-size: 1.3rem"
-      (click)="openPreferencesModal()"
-    >
-      Stel sportvoorkeuren in
-    </button>
-  </div>
+   
 
    <!-- Voorkeuren pop-up -->
 <div
@@ -271,36 +268,26 @@ role="dialog"
 </div>
 </div>
 
-<!-- Aanbevolen sporten -->
-<div
-*ngIf="sportsRecommendations.length > 0"
-class="recommendations-container mt-5"
->
-<h3 class="text-center text-primary mb-4">Aanbevolen Sporten</h3>
-<div class="row g-4">
-  <div
-    class="col-md-4"
-    *ngFor="let sport of sportsRecommendations.slice(0, 3)"
-  >
-    <div class="card shadow-lg border-0">
-      <div class="card-header text-white bg-primary text-center">
-        <h5 class="card-title mb-0">{{ sport.name }}</h5>
-      </div>
-      <div class="card-body text-center">
-        <p class="card-text">
-          <strong>Benodigdheden:</strong> {{ sport.equipment || 'Geen' }}
-        </p>
-        <p class="card-text">
-          <strong>Intensiteit:</strong> {{ sport.intensity }}
-        </p>
-        <p class="card-text">
-          <strong>Binnen of Buiten:</strong>
-          {{ sport.indoor ? 'Binnen' : 'Buiten' }}
-        </p>
-      </div>
-      <div class="card-footer bg-light text-center">
+ <!-- Aanbevolen sporten -->
+ <div *ngIf="sportsRecommendations.length > 0" class="recommendations-container mt-5">
+  <h3 class="text-center text-primary mb-4">Aanbevolen Sporten</h3>
+  <div class="row g-4">
+    <div
+      class="col-md-4"
+      *ngFor="let sport of sportsRecommendations"
+    >
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+          {{ sport.name }}
+        </div>
+        <div class="card-body text-center">
+          <p><strong>Benodigdheden:</strong> {{ sport.equipment?.join(', ') || 'Geen' }}</p>
+          <p><strong>Intensiteit:</strong> {{ sport.intensity }}</p>
+          <p><strong>Binnen of Buiten:</strong> {{ sport.isIndoor ? 'Binnen' : 'Buiten' }}</p>
+        </div>
       </div>
     </div>
   </div>
+</div>
 </div>
 </div>
