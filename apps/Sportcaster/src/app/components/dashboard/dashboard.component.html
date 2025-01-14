@@ -88,11 +88,10 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-8" style="padding-right: 0px;">
+      <div class="col-12 col-md-8">
         <div class="row g-3">
           <div
             class="col-6 col-md-4"
-            style="padding-right: 1px;"
             *ngFor="
               let metric of [
                 {
@@ -304,6 +303,8 @@
           <p><strong>Benodigdheden:</strong> {{ sport.equipment?.join(', ') || 'Geen' }}</p>
           <p><strong>Intensiteit:</strong> {{ sport.intensity }}</p>
           <p><strong>Binnen of Buiten:</strong> {{ sport.isIndoor ? 'Binnen' : 'Buiten' }}</p>
+          <p><strong>Type sport:</strong> {{ sport.type}}</p>
+
         </div>
       </div>
     </div>
