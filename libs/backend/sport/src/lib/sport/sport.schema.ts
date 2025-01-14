@@ -16,6 +16,9 @@ export class Sport implements ISport {
     @Prop({ required: true, type: Number })
     duration!: number;
 
+    @Prop({ required: true, type: Boolean })
+    isIndoor!: boolean;
+
     @Prop({ required: true, enum: SportIntensity, type: String })
     intensity!: SportIntensity;
 

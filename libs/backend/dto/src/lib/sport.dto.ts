@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber, IsOptional, IsEnum, IsArray } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsOptional, IsEnum, IsArray, IsBoolean } from 'class-validator';
 import { SportType, SportIntensity } from '../../../../shared/api/src';
 
 export class CreateSportDto {
@@ -14,6 +14,9 @@ export class CreateSportDto {
     @IsNumber()
     @IsNotEmpty()
     duration!: number;
+
+    @IsBoolean() 
+    isIndoor!: boolean;
 
     @IsEnum(SportIntensity)
     @IsNotEmpty()

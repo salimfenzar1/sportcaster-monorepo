@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherHelperService } from '@libs/backend/services/weather-helper.service';
 import { CitySuggestionService } from '@libs/backend/services/city-suggestion.service';
+import { SportService } from '@libs/frontend/features/src/lib/sport/sport.service'; // Import SportService
+import { ISport } from '@libs/shared/api/src/lib/models/sport.interface'; // Import Sport Interface
 
 @Component({
   standalone: false,
@@ -11,28 +13,44 @@ import { CitySuggestionService } from '@libs/backend/services/city-suggestion.se
 export class DashboardComponent implements OnInit {
   currentWeather: any = null;
   weatherForecast: any = null;
-  currentWeatherCondition = ''; // Toevoegen van currentWeatherCondition
-  enteredLocation = '';
-  isCurrentLocation = true;
+  currentWeatherCondition: string = '';
+  enteredLocation: string = '';
+  isCurrentLocation: boolean = true;
   suggestedCities: any[] = [];
-  sportsRecommendations: any[] = [];
-  showModal = false;
-  showForecast = false; 
-
+  sportsRecommendations: ISport[] = [];
+  showModal: boolean = false;
+  showForecast: boolean = false;
+  allSports: ISport[] = []; // Houdt alle sporten uit de database bij
 
   preferences = {
     indoor: null,
-    equipment: '',
+    equipment: [] as string[],
     intensity: ''
   };
 
+  equipmentOptions: string[] = ['Mat', 'Fiets', 'Halter', 'Springtouw', 'Schoenen'];
+
   constructor(
     public weatherHelperService: WeatherHelperService,
-    private citySuggestionService: CitySuggestionService
+    private citySuggestionService: CitySuggestionService,
+    private sportService: SportService // Injecteer SportService
   ) {}
 
   ngOnInit(): void {
     this.getCurrentLocation();
+    this.loadAllSports(); // Haal sporten op bij het laden van de pagina
+  }
+
+  loadAllSports(): void {
+    this.sportService.findAll().subscribe({
+      next: (sports) => {
+        this.allSports = sports;
+        console.log('Sporten uit de database:', this.allSports);
+      },
+      error: (err) => {
+        console.error('Fout bij het ophalen van sporten:', err);
+      },
+    });
   }
 
   openPreferencesModal(): void {
@@ -47,40 +65,54 @@ export class DashboardComponent implements OnInit {
     this.fetchRecommendedSports();
     this.closePreferencesModal();
   }
+
   toggleForecast(): void {
-    this.showForecast = !this.showForecast; 
+    this.showForecast = !this.showForecast;
   }
 
   fetchRecommendedSports(): void {
     console.log('Huidige voorkeuren:', this.preferences);
-  
-    // Controleer of voorkeuren correct zijn ingesteld
+
     const indoorFilter = this.preferences.indoor !== null
-      ? (sport: any) => sport.indoor === this.preferences.indoor
+      ? (sport: ISport) => sport.isIndoor === this.preferences.indoor
       : () => true;
-    const equipmentFilter = this.preferences.equipment.trim() !== ''
-      ? (sport: any) => sport.equipment.toLowerCase().includes(this.preferences.equipment.toLowerCase())
+
+      const equipmentFilter = this.preferences.equipment.length
+      ? (sport: ISport) =>
+          sport.equipment && // Controleer of equipment niet undefined is
+          this.preferences.equipment.every((item) =>
+            sport.equipment?.includes(item) // Gebruik de optional chaining (?.) operator
+          )
       : () => true;
-    const intensityFilter = this.preferences.intensity.trim() !== ''
-      ? (sport: any) => sport.intensity.toLowerCase() === this.preferences.intensity.toLowerCase()
+    
+    
+
+    const intensityFilter = this.preferences.intensity
+      ? (sport: ISport) => sport.intensity.toLowerCase() === this.preferences.intensity.toLowerCase()
       : () => true;
-  
-    // Data van sporten
-    const sportsData = [
-      { name: 'Cycling', indoor: false, equipment: 'Bicycle', intensity: 'Moderate' },
-      { name: 'Yoga', indoor: true, equipment: 'Mat', intensity: 'Low' },
-      { name: 'Running', indoor: false, equipment: '', intensity: 'High' },
-    ];
-  
-    // Pas filters toe
-    this.sportsRecommendations = sportsData.filter(
-      (sport) => indoorFilter(sport) && equipmentFilter(sport) && intensityFilter(sport)
+
+    const weatherFilter = (sport: ISport) => {
+      if (this.currentWeather) {
+        if (this.currentWeather.precipitation !== '0 mm') {
+          return sport.isIndoor; // Suggest indoor sports if it rains
+        }
+        if (parseFloat(this.currentWeather.temperature) < 10) {
+          return sport.isIndoor; // Suggest indoor sports if it's too cold
+        }
+        if (parseFloat(this.currentWeather.temperature) > 25) {
+          return !sport.isIndoor; // Suggest outdoor sports if it's hot
+        }
+      }
+      return true;
+    };
+
+    this.sportsRecommendations = this.allSports.filter(
+      (sport) => indoorFilter(sport) && equipmentFilter(sport) && intensityFilter(sport) && weatherFilter(sport)
     );
-  
+
     console.log('Aanbevolen sporten:', this.sportsRecommendations);
   }
-  
-  
+
   getCurrentLocation(): void {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -150,7 +182,7 @@ export class DashboardComponent implements OnInit {
     this.citySuggestionService.getCitySuggestions(this.enteredLocation).subscribe({
       next: (response) => {
         this.suggestedCities = response.map((city: any) => ({
-          name: `${city.name}, ${city.country}`
+          name: `${city.name}, ${city.country}`,
         }));
       },
       error: (error) => {
@@ -192,7 +224,6 @@ export class DashboardComponent implements OnInit {
           precipitation: forecast.rain ? `${forecast.rain['3h']} mm` : '0 mm',
         }));
 
-        // Bepaal de achtergrondconditie op basis van weer
         this.currentWeatherCondition = this.weatherHelperService.determineBackgroundCondition(
           this.currentWeather.condition
         );

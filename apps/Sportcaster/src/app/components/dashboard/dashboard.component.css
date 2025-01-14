@@ -61,10 +61,6 @@
 button i {
   margin-right: 5px; /* Ruimte tussen het icoon en de tekst */
 }
-.search-bar-container {
-  margin-left: auto; /* Zorg dat de zoekbalk helemaal naar rechts gaat */
-
-}
 
 .refreshbtn {
   color: white;

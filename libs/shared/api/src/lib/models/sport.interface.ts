@@ -1,8 +1,6 @@
  
 
 export enum SportType {
-    Outdoor = 'Outdoor',
-    Indoor = 'Indoor',
     Water = 'Water',
     Extreme = 'Extreme'
 }
@@ -17,6 +15,7 @@ export interface ISport {
     name: string;
     type: SportType;
     duration: number;
+    isIndoor: boolean;
     intensity: SportIntensity;
     equipment?: string[];
 }
