@@ -7,14 +7,14 @@
  <div class="d-flex justify-content-end align-items-center mt-5 gap-3 responsive-flex">
   <!-- Knop voor sportvoorkeuren -->
   <button
-    class="btn btn-primary responsive-btn"
+    class="btn btn-primary responsive-btn w-100"
     (click)="openPreferencesModal()"
   >
     Stel sportvoorkeuren in
   </button>
 
   <!-- Zoekbalk met automatische suggesties -->
-  <div class="search-bar-container position-relative">
+  <div class="search-bar-container position-relative w-50">
     <div class="input-group">
       <input
         type="text"
@@ -88,10 +88,11 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-8">
+      <div class="col-12 col-md-8" style="padding-right: 0px;">
         <div class="row g-3">
           <div
             class="col-6 col-md-4"
+            style="padding-right: 1px;"
             *ngFor="
               let metric of [
                 {
