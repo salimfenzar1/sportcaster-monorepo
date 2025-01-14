@@ -187,12 +187,18 @@ button i {
   padding: 20px;
   border-radius: 12px;
 }
+.responsive-width{
+  width: 50%;
+}
 
 /* Responsive ontwerp */
 @media (max-width: 768px) {
   .row.mb-4 {
     flex-direction: column;
     text-align: center;
+  }
+  .responsive-width{
+    width: 100%;
   }
 
   .input-group {
