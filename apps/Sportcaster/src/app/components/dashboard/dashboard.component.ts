@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WeatherHelperService } from '@libs/backend/services/weather-helper.service';
 import { CitySuggestionService } from '@libs/backend/services/city-suggestion.service';
 import { SportService } from '@libs/frontend/features/src/lib/sport/sport.service'; // Import SportService
-import { ISport } from '@libs/shared/api/src/lib/models/sport.interface'; // Import Sport Interface
+import { Equipment, ISport, SportType } from '@libs/shared/api/src/lib/models/sport.interface'; // Import Sport Interface
 
 @Component({
   standalone: false,
@@ -20,15 +20,17 @@ export class DashboardComponent implements OnInit {
   sportsRecommendations: ISport[] = [];
   showModal: boolean = false;
   showForecast: boolean = false;
-  allSports: ISport[] = []; // Houdt alle sporten uit de database bij
+  allSports: ISport[] = []; 
+  sportTypes = Object.values(SportType);
+  equipmentOptions = Object.values(Equipment);
 
   preferences = {
     indoor: null,
     equipment: [] as string[],
-    intensity: ''
+    intensity: '',
+    type:''
   };
 
-  equipmentOptions: string[] = ['Mat', 'Fiets', 'Halter', 'Springtouw', 'Schoenen'];
 
   constructor(
     public weatherHelperService: WeatherHelperService,
@@ -52,6 +54,16 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
+  toggleEquipment(equipment: Equipment): void {
+    const index = this.preferences.equipment.indexOf(equipment);
+    if (index > -1) {
+      this.preferences.equipment.splice(index, 1);
+    } else {
+      this.preferences.equipment.push(equipment);
+    }
+    console.log('Bijgewerkte equipment:', this.preferences.equipment);
+  }
+  
 
   openPreferencesModal(): void {
     this.showModal = true;
@@ -72,25 +84,30 @@ export class DashboardComponent implements OnInit {
 
   fetchRecommendedSports(): void {
     console.log('Huidige voorkeuren:', this.preferences);
-
+  
     const indoorFilter = this.preferences.indoor !== null
-      ? (sport: ISport) => sport.isIndoor === this.preferences.indoor
-      : () => true;
+  ? (sport: ISport) => sport.isIndoor === (this.preferences.indoor === 'true')
+  : () => true;
 
+  
+    const typeFilter = this.preferences.type
+      ? (sport: ISport) => sport.type === this.preferences.type
+      : () => true;
+  
       const equipmentFilter = this.preferences.equipment.length
       ? (sport: ISport) =>
-          sport.equipment && // Controleer of equipment niet undefined is
+          sport.equipment &&
           this.preferences.equipment.every((item) =>
-            sport.equipment?.includes(item) // Gebruik de optional chaining (?.) operator
+            sport.equipment?.includes(item as Equipment) 
           )
       : () => true;
     
-    
-
+  
     const intensityFilter = this.preferences.intensity
-      ? (sport: ISport) => sport.intensity.toLowerCase() === this.preferences.intensity.toLowerCase()
+      ? (sport: ISport) =>
+          sport.intensity.toLowerCase() === this.preferences.intensity.toLowerCase()
       : () => true;
-
+  
     const weatherFilter = (sport: ISport) => {
       if (this.currentWeather) {
         if (this.currentWeather.precipitation !== '0 mm') {
@@ -105,13 +122,19 @@ export class DashboardComponent implements OnInit {
       }
       return true;
     };
-
+  
     this.sportsRecommendations = this.allSports.filter(
-      (sport) => indoorFilter(sport) && equipmentFilter(sport) && intensityFilter(sport) && weatherFilter(sport)
+      (sport) =>
+        indoorFilter(sport) &&
+        typeFilter(sport) &&
+        equipmentFilter(sport) &&
+        intensityFilter(sport) &&
+        weatherFilter(sport)
     );
-
+  
     console.log('Aanbevolen sporten:', this.sportsRecommendations);
   }
+  
 
   getCurrentLocation(): void {
     if ('geolocation' in navigator) {

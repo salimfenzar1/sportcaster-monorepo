@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { SportType, SportIntensity, ISport } from '../../../../../shared/api/src';
+import { SportType, SportIntensity, ISport, Equipment } from '../../../../../shared/api/src';
 import { IsMongoId } from 'class-validator';
 
 export type SportDocument = Sport & Document;
@@ -22,8 +22,8 @@ export class Sport implements ISport {
     @Prop({ required: true, enum: SportIntensity, type: String })
     intensity!: SportIntensity;
 
-    @Prop({ required: false, type: [String], default: [] })
-    equipment!: string[];
+    @Prop({ required: false, enum: Equipment, default: [] })
+    equipment!: Equipment[];
 }
 
 export const SportSchema = SchemaFactory.createForClass(Sport);

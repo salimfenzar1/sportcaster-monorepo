@@ -187,85 +187,109 @@
                 </div>
    
 
-   <!-- Voorkeuren pop-up -->
+<!-- Voorkeuren pop-up -->
 <div
-class="modal fade show"
-tabindex="-1"
-[class.show]="showModal"
-[ngStyle]="{ display: showModal ? 'block' : 'none' }"
-role="dialog"
+  class="modal fade show"
+  tabindex="-1"
+  [class.show]="showModal"
+  [ngStyle]="{ display: showModal ? 'block' : 'none' }"
+  role="dialog"
 >
-<div class="modal-dialog modal-dialog-centered">
-  <div class="modal-content shadow-lg">
-    <div class="modal-header bg-primary text-white">
-      <h5 class="modal-title">Sportvoorkeuren</h5>
-      <button
-        type="button"
-        class="btn-close text-white"
-        (click)="closePreferencesModal()"
-        aria-label="Close"
-      ></button>
-    </div>
-    <div class="modal-body">
-      <form>
-        <div class="mb-4">
-          <label for="indoor" class="form-label">Binnen of Buiten?</label>
-          <select
-            id="indoor"
-            class="form-select"
-            [(ngModel)]="preferences.indoor"
-            name="indoor"
-          >
-            <option [value]="null">Geen voorkeur</option>
-            <option [value]="true">Binnen</option>
-            <option [value]="false">Buiten</option>
-          </select>
-        </div>
-        <div class="mb-4">
-          <label for="equipment" class="form-label">Benodigdheden</label>
-          <input
-            type="text"
-            id="equipment"
-            class="form-control"
-            placeholder="Bijvoorbeeld: Mat, Fiets"
-            [(ngModel)]="preferences.equipment"
-            name="equipment"
-          />
-        </div>
-        <div class="mb-4">
-          <label for="intensity" class="form-label">Intensiteit</label>
-          <select
-            id="intensity"
-            class="form-select"
-            [(ngModel)]="preferences.intensity"
-            name="intensity"
-          >
-            <option [value]="''">Geen voorkeur</option>
-            <option value="Low">Laag</option>
-            <option value="Moderate">Gemiddeld</option>
-            <option value="High">Hoog</option>
-          </select>
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer d-flex justify-content-between">
-      <button
-        type="button"
-        class="btn btn-outline-secondary"
-        (click)="closePreferencesModal()"
-      >
-        Annuleer
-      </button>
-      <button
-        type="button"
-        class="btn btn-primary px-4 py-2"
-        (click)="submitPreferences()"
-      >
-        Opslaan
-      </button>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Sportvoorkeuren</h5>
+        <button
+          type="button"
+          class="btn-close text-white"
+          (click)="closePreferencesModal()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <!-- Binnen of Buiten -->
+          <div class="mb-4">
+            <label for="indoor" class="form-label">Binnen of Buiten?</label>
+            <select
+              id="indoor"
+              class="form-select"
+              [(ngModel)]="preferences.indoor"
+              name="indoor"
+            >
+              <option [value]="null">Geen voorkeur</option>
+              <option [value]="true">Binnen</option>
+              <option [value]="false">Buiten</option>
+            </select>
+          </div>
+
+          <!-- Sport Type -->
+          <div class="mb-4">
+            <label for="type" class="form-label">Sporttype</label>
+            <select
+              id="type"
+              class="form-select"
+              [(ngModel)]="preferences.type"
+              name="type"
+            >
+              <option [value]="''">Geen voorkeur</option>
+              <option *ngFor="let type of sportTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Benodigdheden</label>
+            <div class="form-check" *ngFor="let equipment of equipmentOptions">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [id]="equipment"
+                [value]="equipment"
+                (change)="toggleEquipment(equipment)"
+                [checked]="preferences.equipment.includes(equipment)"
+              />
+              <label class="form-check-label" [for]="equipment">
+                {{ equipment }}
+              </label>
+            </div>
+          </div>
+          
+
+          <!-- Intensiteit -->
+          <div class="mb-4">
+            <label for="intensity" class="form-label">Intensiteit</label>
+            <select
+              id="intensity"
+              class="form-select"
+              [(ngModel)]="preferences.intensity"
+              name="intensity"
+            >
+              <option [value]="''">Geen voorkeur</option>
+              <option value="Low">Laag</option>
+              <option value="Medium">Gemiddeld</option>
+              <option value="High">Hoog</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex justify-content-between">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="closePreferencesModal()"
+        >
+          Annuleer
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary px-4 py-2"
+          (click)="submitPreferences()"
+        >
+          Opslaan
+        </button>
+      </div>
     </div>
   </div>
-</div>
 </div>
 
  <!-- Aanbevolen sporten -->

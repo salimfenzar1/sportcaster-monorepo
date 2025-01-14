@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, IsNumber, IsOptional, IsEnum, IsArray, IsBoolean } from 'class-validator';
-import { SportType, SportIntensity } from '../../../../shared/api/src';
+import { SportType, SportIntensity, Equipment } from '../../../../shared/api/src';
 
 export class CreateSportDto {
 
@@ -24,7 +24,7 @@ export class CreateSportDto {
 
     @IsArray()
     @IsOptional()
-    equipment?: string[];
+    equipment?: Equipment[];
 }
 
 export class UpsertSportDto {
@@ -50,7 +50,7 @@ export class UpsertSportDto {
 
     @IsArray()
     @IsOptional()
-    equipment?: string[];
+    equipment?: Equipment[];
 }
 
 export class UpdateSportDto {
@@ -76,5 +76,5 @@ export class UpdateSportDto {
 
     @IsArray()
     @IsOptional()
-    equipment?: string[];
+    equipment?: Equipment[];
 }
