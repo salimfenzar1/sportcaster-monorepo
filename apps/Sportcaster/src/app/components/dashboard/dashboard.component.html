@@ -151,42 +151,37 @@
             {{ showForecast ? 'Verberg Weersvoorspelling' : 'Toon Weersvoorspelling' }}
           </button>
         </div>
-    <!-- Weersvoorspelling -->
-    <div *ngIf="showForecast" class="row g-4 mt-4">
-      <div class="col-md-12">
-        <div class="card text-white bg-dark shadow">
-          <div class="card-header text-center">3-Uurs Weersvoorspelling</div>
-          <div class="card-body">
-            <div class="row g-3">
-              <div
-                class="col-6 col-md-4"
-                *ngFor="let forecast of weatherForecast"
-              >
-                <div class="card text-white bg-secondary shadow h-100">
-                  <div class="card-body text-center">
-                    <h6 class="card-title">{{ forecast.time }}</h6>
-                    <i class="bi bi-thermometer-half"></i>
-                    <p class="card-text">
-                      <strong>{{ forecast.temperature }}</strong>
-                    </p>
-                    <i class="bi bi-wind"></i>
-                    <p class="card-text">
-                      <strong>{{ forecast.windSpeed }}</strong>
-                    </p>
-                    <i class="bi bi-cloud-rain"></i>
-                    <p class="card-text">
-                      <strong>{{ forecast.precipitation }}</strong>
-                    </p>
+        <div *ngIf="showForecast" [ngClass]="forecastBackgroundCondition" class="forecast-container mt-4">
+          <div class="card shadow-lg text-white forecast-card">
+            <div class="card-header text-center">
+              <h3>3-Uurs Weersvoorspelling</h3>
+            </div>
+            <div class="card-body">
+              <div class="row g-4">
+                <div class="col-6 col-md-4" *ngFor="let forecast of weatherForecast">
+                  <div class="forecast-item">
+                    <div class="forecast-time">
+                      <i class="bi bi-clock"></i> {{ forecast.time }}
+                    </div>
+                    <div class="forecast-temperature">
+                      <i class="bi bi-thermometer-half"></i>
+                      <span>{{ forecast.temperature }}</span>
+                    </div>
+                    <div class="forecast-wind">
+                      <i class="bi bi-wind"></i>
+                      <span>{{ forecast.windSpeed }}</span>
+                    </div>
+                    <div class="forecast-precipitation">
+                      <i class="bi bi-cloud-rain"></i>
+                      <span>{{ forecast.precipitation }}</span>
+                    </div>
                   </div>
+                </div>
               </div>
-                </div>
-                </div>
-                </div>
-                </div>
-                </div>
-                </div>
-   
-
+            </div>
+          </div>
+        </div>
+        
 <!-- Voorkeuren pop-up -->
 <div
   class="modal fade show"

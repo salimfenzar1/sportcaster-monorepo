@@ -1,10 +1,18 @@
+/* Algemene stijlen */
 .card {
   border-radius: 10px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
 }
 
 .card-header {
   font-size: 1.25rem;
   font-weight: bold;
+  text-align: center;
 }
 
 .card img {
@@ -21,45 +29,77 @@
 .shadow {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+/* Dynamische GIF-achtergronden */
+.weather-dashboard,
+.forecast-container {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 12px;
+}
+
+.weather-dashboard.sunny,
+.forecast-container.sunny {
+  background-image: url('/assets/gifs/sunny.gif');
+}
+
+.weather-dashboard.rainy,
+.forecast-container.rainy {
+  background-image: url('/assets/gifs/rainy.gif');
+}
+
+.weather-dashboard.snowy,
+.forecast-container.snowy {
+  background-image: url('/assets/gifs/snowy.gif');
+}
+
+.weather-dashboard.cloudy,
+.forecast-container.cloudy {
+  background-image: url('/assets/gifs/cloudy.gif');
+}
+
+.weather-dashboard.misty,
+.forecast-container.misty {
+  background-image: url('/assets/gifs/misty.gif');
+}
+
+.weather-dashboard.default,
+.forecast-container.default {
+  background-image: url('/assets/gifs/default.gif'); /* Fallback GIF */
+}
+
+/* Huidig weer */
 .card-body-weather {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%; 
-}
-.weather-dashboard {
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.stroke{
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5),
-  2px 2px 4px rgba(0, 0, 0, 0.5),
-  2px 2px 4px rgba(0, 0, 0, 0.5); 
+  height: 100%;
 }
 
-.sunny {
-  background-image: url('/assets/gifs/sunny.gif');
+.stroke {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.rainy {
-  background-image: url('/assets/gifs/rainy.gif');
+/* Zoekbalk en dropdown */
+.list-group {
+  position: absolute;
+  z-index: 1050;
+  background: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
-.snowy {
-  background-image: url('/assets/gifs/snowy.gif');
-}
-
-.cloudy {
-  background-image: url('/assets/gifs/cloudy.gif');
-}
-.misty{
-  background-image: url('/assets/gifs/misty.gif');
+.list-group-item {
+  cursor: pointer;
+  padding: 10px;
 }
 
 button i {
-  margin-right: 5px; /* Ruimte tussen het icoon en de tekst */
+  margin-right: 5px;
 }
 
 .refreshbtn {
@@ -69,49 +109,9 @@ button i {
 
 .refreshbtn:hover {
   color: grey;
-
-}
-.list-group {
-  position: absolute;
-  z-index: 1050; /* Zorg ervoor dat het boven andere elementen blijft */
-  background: white; /* Achtergrondkleur om tekst leesbaar te maken */
-  border: 1px solid #ccc; /* Optionele rand */
-  width: 100%; /* Zorgt ervoor dat de dropdown net zo breed is als het inputveld */
-  max-height: 200px; /* Voorkomt dat de lijst te groot wordt */
-  overflow-y: auto; /* Scroll mogelijk maken als er veel resultaten zijn */
 }
 
-.list-group-item {
-  cursor: pointer; /* Cursor verandert naar pointer bij hover */
-  padding: 10px;
-}
-
-
-@media (max-width: 768px) {
-  .row.mb-4 {
-    flex-direction: column; /* Zorg dat de zoekbalk en knop onder elkaar staan op kleinere schermen */
-    text-align: center;
-  }
-
-  .input-group {
-    margin-top: 15px; /* Ruimte tussen knop en zoekbalk op mobiel */
-  }
-  
-  .search-bar-container {
-    width: 100%; /* Laat de zoekbalk de volledige breedte innemen op mobiel */
-  }
-    .col-auto {
-      width: 100% !important;
-    }
-    .responsive-margin{
-      margin-top: .5rem !important;
-    }
-}
-
-
-
-
-/* Modal customizations */
+/* Voorkeuren modal */
 .modal-content {
   border-radius: 12px;
   overflow: hidden;
@@ -125,39 +125,103 @@ button i {
   border-top: 0;
 }
 
-/* Recommendations styling */
+/* Voorspelling sectie */
+.forecast-container {
+  padding: 20px;
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.forecast-card {
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.forecast-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.forecast-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.forecast-time {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.forecast-temperature,
+.forecast-wind,
+.forecast-precipitation {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.forecast-time i,
+.forecast-temperature i,
+.forecast-wind i,
+.forecast-precipitation i {
+  margin-right: 5px;
+}
+
+.card-header {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Aanbevelingen styling */
 .recommendations-container {
   background: linear-gradient(to bottom, #ffffff, #f8f9fa);
   padding: 20px;
   border-radius: 12px;
 }
 
-.card {
-  border-radius: 10px;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+/* Responsive ontwerp */
+@media (max-width: 768px) {
+  .row.mb-4 {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .input-group {
+    margin-top: 15px;
+  }
+
+  .search-bar-container {
+    width: 100%;
+  }
+
+  .col-auto {
+    width: 100% !important;
+  }
+
+  .responsive-margin {
+    margin-top: 0.5rem !important;
+  }
+
+  .forecast-item {
+    padding: 10px;
+  }
+
+  .forecast-time {
+    font-size: 1rem;
+  }
+
+  .forecast-temperature,
+  .forecast-wind,
+  .forecast-precipitation {
+    font-size: 0.9rem;
+  }
 }
-
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-}
-
-.card-header {
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-.card-body {
-  font-size: 1rem;
-}
-
-.card-footer {
-  border-top: 0;
-}
-
-.btn-outline-primary {
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-
-

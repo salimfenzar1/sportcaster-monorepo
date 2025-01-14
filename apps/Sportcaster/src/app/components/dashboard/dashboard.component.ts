@@ -23,6 +23,8 @@ export class DashboardComponent implements OnInit {
   allSports: ISport[] = []; 
   sportTypes = Object.values(SportType);
   equipmentOptions = Object.values(Equipment);
+  forecastBackgroundCondition: string = '';
+
 
   preferences = {
     indoor: null,
@@ -41,8 +43,29 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getCurrentLocation();
     this.loadAllSports(); // Haal sporten op bij het laden van de pagina
-  }
+    this.setForecastBackgroundCondition(); // Zet de achtergrondconditie
 
+  }
+  setForecastBackgroundCondition(): void {
+    if (this.weatherForecast && this.weatherForecast.length > 0) {
+      const condition = this.weatherForecast[0].condition.toLowerCase();
+      if (condition.includes('rain')) {
+        this.forecastBackgroundCondition = 'rainy';
+      } else if (condition.includes('sun')) {
+        this.forecastBackgroundCondition = 'sunny';
+      } else if (condition.includes('cloud')) {
+        this.forecastBackgroundCondition = 'cloudy';
+      } else if (condition.includes('snow')) {
+        this.forecastBackgroundCondition = 'snowy';
+      } else if (condition.includes('mist')) {
+        this.forecastBackgroundCondition = 'misty';
+      } else {
+        this.forecastBackgroundCondition = 'default';
+      }
+    } else {
+      this.forecastBackgroundCondition = 'default';
+    }
+  }
   loadAllSports(): void {
     this.sportService.findAll().subscribe({
       next: (sports) => {
