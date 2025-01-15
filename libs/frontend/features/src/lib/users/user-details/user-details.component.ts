@@ -6,7 +6,7 @@ import { UserService } from '../user.service';
   standalone: false,
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styles: []
+  styleUrls: ['./user-details.component.css'],
 })
 export class UserDetailsComponent implements OnInit {
   userDetails: IUserInfo | null = null;
