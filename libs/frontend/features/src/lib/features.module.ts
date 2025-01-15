@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from './users/user.service';
 import { HttpClientModule } from '@angular/common/http'; 
 import { AuthService } from './auth/auth.service';
+import { UserPreferencesComponent } from './users/user-preferences/user-preferences.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { AuthService } from './auth/auth.service';
         UserDetailsComponent,
         UserListComponent,
         UserEditComponent,
+        UserPreferencesComponent
     ],
     providers: [
         UserService,
