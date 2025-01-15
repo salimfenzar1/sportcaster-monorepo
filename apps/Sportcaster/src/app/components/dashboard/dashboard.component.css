@@ -188,7 +188,7 @@ button i {
   border-radius: 12px;
 }
 .responsive-width{
-  width: 50%;
+  width: 70%;
 }
 
 /* Responsive ontwerp */
@@ -207,6 +207,9 @@ button i {
 
   .search-bar-container {
     width: 100%;
+  }
+  .resp-btn{
+    margin-bottom: 5px;
   }
 
   .col-auto {
