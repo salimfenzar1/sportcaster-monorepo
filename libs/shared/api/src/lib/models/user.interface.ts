@@ -43,7 +43,7 @@ export interface IUserInfo extends IUserRegistration {
     isActive: boolean;
     preferences?: {
         sportTypes: SportType[];
-        isIndoor: boolean;
+        isIndoor: boolean | null;
         equipment: Equipment[];
         intensity: SportIntensity;
     };

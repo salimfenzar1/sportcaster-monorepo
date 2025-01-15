@@ -3,6 +3,9 @@ import { WeatherHelperService } from '@libs/backend/services/weather-helper.serv
 import { CitySuggestionService } from '@libs/backend/services/city-suggestion.service';
 import { SportService } from '@libs/frontend/features/src/lib/sport/sport.service'; // Import SportService
 import { Equipment, ISport, SportType } from '@libs/shared/api/src/lib/models/sport.interface'; // Import Sport Interface
+import { AuthService } from '@libs/frontend/features/src/lib/auth/auth.service'; // Zorg voor een AuthService om inlogstatus te controleren
+import { UserService } from '@libs/frontend/features/src/lib/users/user.service'; // Voor het ophalen van gebruikersvoorkeuren
+
 
 @Component({
   standalone: false,
@@ -24,6 +27,7 @@ export class DashboardComponent implements OnInit {
   sportTypes = Object.values(SportType);
   equipmentOptions = Object.values(Equipment);
   forecastBackgroundCondition: string = '';
+  isLoggedIn: boolean = false;
 
 
   preferences = {
@@ -37,13 +41,16 @@ export class DashboardComponent implements OnInit {
   constructor(
     public weatherHelperService: WeatherHelperService,
     private citySuggestionService: CitySuggestionService,
-    private sportService: SportService // Injecteer SportService
+    private sportService: SportService, // Injecteer SportService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.getCurrentLocation();
     this.loadAllSports(); // Haal sporten op bij het laden van de pagina
     this.setForecastBackgroundCondition(); // Zet de achtergrondconditie
+    this.isLoggedIn = this.authService.isLoggedIn();
 
   }
   setForecastBackgroundCondition(): void {
@@ -87,7 +94,26 @@ export class DashboardComponent implements OnInit {
     console.log('Bijgewerkte equipment:', this.preferences.equipment);
   }
   
+  getCurrentPreferences(): void {
+    if (!this.isLoggedIn) return; 
 
+    this.userService.getCurrentUser().subscribe({
+      next: (user) => {
+        if (user.preferences) {
+          this.preferences = {
+            indoor: user.preferences.isIndoor,
+            equipment: user.preferences.equipment || [],
+            intensity: user.preferences.intensity || '',
+            type: user.preferences.sportTypes?.[0] || ''
+          };
+          this.fetchRecommendedSports();
+        }
+      },
+      error: (err) => {
+        console.error('Fout bij het ophalen van voorkeuren:', err);
+      },
+    });
+  }
   openPreferencesModal(): void {
     this.showModal = true;
   }
@@ -182,37 +208,26 @@ export class DashboardComponent implements OnInit {
       return true;
     };
   
-    // Combine filters and apply
-    this.sportsRecommendations = this.allSports.filter((sport) => {
-      const passesIndoorFilter = indoorFilter(sport);
-      const passesTypeFilter = typeFilter(sport);
-      const passesEquipmentFilter = equipmentFilter(sport);
-      const passesIntensityFilter = intensityFilter(sport);
-      const passesWeatherFilter = weatherFilter(sport);
-  
-      const isRecommended =
-        passesIndoorFilter &&
-        passesTypeFilter &&
-        passesEquipmentFilter &&
-        passesIntensityFilter &&
-        passesWeatherFilter;
-  
-      console.log(`
-        Sport: ${sport.name}
-        Indoor Filter: ${passesIndoorFilter}
-        Type Filter: ${passesTypeFilter}
-        Equipment Filter: ${passesEquipmentFilter}
-        Intensity Filter: ${passesIntensityFilter}
-        Weather Filter: ${passesWeatherFilter}
-        Recommended: ${isRecommended}
-      `);
-  
-      return isRecommended;
-    });
-  
-    console.log('Aanbevolen sporten:', this.sportsRecommendations);
-  }
-  
+     // Combine filters and apply
+  const filteredSports = this.allSports.filter((sport) => {
+    return (
+      indoorFilter(sport) &&
+      typeFilter(sport) &&
+      equipmentFilter(sport) &&
+      intensityFilter(sport) &&
+      weatherFilter(sport)
+    );
+  });
+
+  // Select random 3 results from filtered sports
+  this.sportsRecommendations = this.getRandomSports(filteredSports, 3);
+
+  console.log('Aanbevolen sporten:', this.sportsRecommendations);
+}
+private getRandomSports(sports: ISport[], count: number): ISport[] {
+  const shuffled = [...sports].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
 
   getCurrentLocation(): void {
     if ('geolocation' in navigator) {

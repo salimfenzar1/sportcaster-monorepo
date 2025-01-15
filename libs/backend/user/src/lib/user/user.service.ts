@@ -72,15 +72,19 @@ export class UserService {
         ).exec();
     }
     
-    async getUserPreferences(userId: string): Promise<{ sportTypes: SportType[]; isIndoor: boolean; equipment: Equipment[]; intensity: SportIntensity }> {
+    async getUserPreferences(userId: string): Promise<IUser['preferences']> {
         if (!Types.ObjectId.isValid(userId)) {
-            throw new HttpException('Invalid ID format', HttpStatus.BAD_REQUEST);
+          throw new HttpException('Invalid ID format', HttpStatus.BAD_REQUEST);
         }
-    
+      
         const user = await this.userModel.findById(userId).select('preferences').exec();
-    
-        // ✅ Zorgt ervoor dat er altijd een geldig `preferences` object wordt geretourneerd
-        return user?.preferences || { sportTypes: [], isIndoor: false, equipment: [], intensity: SportIntensity.Medium };
-    }
-    
+        return (
+          user?.preferences || {
+            sportTypes: [],
+            isIndoor: null,
+            equipment: [],
+            intensity: SportIntensity.Medium,
+          }
+        );
+      }
 }

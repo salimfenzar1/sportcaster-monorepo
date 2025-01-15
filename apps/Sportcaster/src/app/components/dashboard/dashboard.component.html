@@ -7,11 +7,19 @@
  <div class="d-flex justify-content-end align-items-center mt-5 gap-3 responsive-flex">
   <!-- Knop voor sportvoorkeuren -->
   <button
-    class="btn btn-primary responsive-btn w-100"
+    class="btn btn-primary responsive-btn w-100 resp-btn"
     (click)="openPreferencesModal()"
   >
     Stel sportvoorkeuren in
   </button>
+  <button
+  *ngIf="isLoggedIn"
+  class="btn btn-secondary responsive-btn w-100"
+  (click)="getCurrentPreferences()"
+  
+>
+  Jouw suggesties
+</button>
 
   <!-- Zoekbalk met automatische suggesties -->
   <div class="search-bar-container position-relative responsive-width">

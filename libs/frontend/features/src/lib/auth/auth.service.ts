@@ -50,4 +50,17 @@ export class AuthService {
       }
     }
   }
+
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) return false;
+
+    try {
+      const decodedToken: any = jwtDecode(token);
+      const currentTime = Math.floor(Date.now() / 1000); // Huidige tijd in seconden
+      return decodedToken.exp > currentTime; // Controleer of token niet verlopen is
+    } catch {
+      return false;
+    }
+  }
 }
