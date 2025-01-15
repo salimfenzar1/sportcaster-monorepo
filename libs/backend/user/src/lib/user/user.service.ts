@@ -59,7 +59,7 @@ export class UserService {
 
     async updatePreferences(
         userId: string,
-        preferences: { sportTypes: SportType[]; isIndoor: boolean; equipment: Equipment[]; intensity: SportIntensity }
+        preferences: { sportTypes: SportType[]; isIndoor: boolean | null; equipment: Equipment[]; intensity: SportIntensity }
     ): Promise<IUserInfo | null> {
         if (!Types.ObjectId.isValid(userId)) {
             throw new HttpException('Invalid ID format', HttpStatus.BAD_REQUEST);
@@ -67,10 +67,12 @@ export class UserService {
     
         return this.userModel.findByIdAndUpdate(
             userId,
-            { $set: { preferences } }, // ✅ Zorgt ervoor dat het hele preferences-object wordt geüpdatet
+            { $set: { preferences } },
             { new: true }
         ).exec();
     }
+    
+    
     
     async getUserPreferences(userId: string): Promise<IUser['preferences']> {
         if (!Types.ObjectId.isValid(userId)) {

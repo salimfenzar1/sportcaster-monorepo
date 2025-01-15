@@ -36,6 +36,7 @@ export class UserPreferencesComponent implements OnInit {
           equipment: [],
           intensity: SportIntensity.Medium,
         };
+        
 
         // Initialize the form with user preferences
         this.preferencesForm = this.fb.group({
@@ -80,15 +81,26 @@ export class UserPreferencesComponent implements OnInit {
 
   saveOrEditPreferences(): void {
     if (this.isEditing) {
-      // Save preferences
-      const updatedPreferences = this.preferencesForm.value;
-      this.userService.updateUserPreferences(this.user._id, updatedPreferences).subscribe(() => {
-        alert('Preferences updated successfully!');
-        this.toggleEdit(); // Disable fields after saving
+      // Haal bijgewerkte voorkeuren op uit het formulier
+      const updatedPreferences = {
+        ...this.preferencesForm.value,
+        isIndoor: this.preferencesForm.value.isIndoor === '' ? null : this.preferencesForm.value.isIndoor, // Converteer lege string naar null
+      };
+  
+      this.userService.updateUserPreferences(this.user._id, updatedPreferences).subscribe({
+        next: () => {
+          alert('Preferences updated successfully!');
+          this.toggleEdit(); // Disable fields after saving
+        },
+        error: (err) => {
+          console.error('Error updating preferences:', err);
+          alert('Failed to update preferences. Please try again.');
+        },
       });
     } else {
-      // Switch to edit mode
+      // Schakel bewerkingsmodus in
       this.toggleEdit();
     }
   }
+  
 }
