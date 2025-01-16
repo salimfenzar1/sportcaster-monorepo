@@ -200,6 +200,13 @@ button i {
   margin-right: 5px;
   color: #6c757d;
 }
+.text-danger {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.text-muted {
+  font-size: 1rem;
+}
 
 /* Responsive ontwerp */
 @media (max-width: 768px) {

@@ -29,6 +29,8 @@ export class DashboardComponent implements OnInit {
   forecastBackgroundCondition: string = '';
   isLoggedIn: boolean = false;
   isLoadingWeather = false;
+  showPreferences: boolean = false;
+  isLoadingRecommendations: boolean = false;
 
 
   preferences = {
@@ -97,7 +99,7 @@ export class DashboardComponent implements OnInit {
   
   getCurrentPreferences(): void {
     if (!this.isLoggedIn) return; 
-
+    this.showPreferences = true;
     this.userService.getCurrentUser().subscribe({
       next: (user) => {
         if (user.preferences) {
@@ -121,6 +123,7 @@ export class DashboardComponent implements OnInit {
 
   closePreferencesModal(): void {
     this.showModal = false;
+    this.showPreferences = true;
   }
 
   submitPreferences(): void {
@@ -134,96 +137,51 @@ export class DashboardComponent implements OnInit {
 
   fetchRecommendedSports(): void {
     console.log('Huidige voorkeuren:', this.preferences);
-    
-    if (typeof this.preferences.indoor === 'string') {
-      if (this.preferences.indoor === 'true') {
-        this.preferences.indoor = true;
-      } else if (this.preferences.indoor === 'false') {
-        this.preferences.indoor = false;
-      } else if (this.preferences.indoor === 'null') {
-        this.preferences.indoor = null;
-      }
-    }
-    
-    
+  
+    this.isLoadingRecommendations = true; // Zet de laadtoestand aan
   
     // Indoor filter
     const indoorFilter = this.preferences.indoor !== null
-      ? (sport: ISport) => {
-          const result = sport.isIndoor === this.preferences.indoor;
-          console.log(`Indoor filter - Sport: ${sport.name}, Result: ${result}`);
-          return result;
-        }
+      ? (sport: ISport) => sport.isIndoor === this.preferences.indoor
       : () => true;
   
     // Type filter
     const typeFilter = this.preferences.type
-      ? (sport: ISport) => {
-          const result = sport.type === this.preferences.type;
-          console.log(`Type filter - Sport: ${sport.name}, Result: ${result}`);
-          return result;
-        }
+      ? (sport: ISport) => sport.type === this.preferences.type
       : () => true;
   
     // Equipment filter
     const equipmentFilter = (sport: ISport) => {
       const sportEquipment = sport.equipment || [];
-      // Geen equipment nodig, of ten minste één match
       return (
-        sportEquipment.length === 0 ||
-        sportEquipment.some((eq) => this.preferences.equipment.includes(eq))
+        sportEquipment.length === 0 || // Geen equipment nodig
+        sportEquipment.some((eq) => this.preferences.equipment.includes(eq)) // Minimaal één match
       );
     };
   
-  
     // Intensity filter
     const intensityFilter = this.preferences.intensity
-      ? (sport: ISport) => {
-          const result =
-            sport.intensity.toLowerCase() === this.preferences.intensity.toLowerCase();
-          console.log(`Intensity filter - Sport: ${sport.name}, Result: ${result}`);
-          return result;
-        }
+      ? (sport: ISport) => sport.intensity.toLowerCase() === this.preferences.intensity.toLowerCase()
       : () => true;
   
-    // Weather filter
-    const weatherFilter = (sport: ISport) => {
-      if (this.currentWeather) {
-        if (this.currentWeather.precipitation !== '0 mm') {
-          const result = sport.isIndoor; // Suggest indoor sports if it rains
-          console.log(`Weather filter (Rain) - Sport: ${sport.name}, Result: ${result}`);
-          return result;
-        }
-        if (parseFloat(this.currentWeather.temperature) < 10) {
-          const result = sport.isIndoor; // Suggest indoor sports if it's too cold
-          console.log(`Weather filter (Cold) - Sport: ${sport.name}, Result: ${result}`);
-          return result;
-        }
-        if (parseFloat(this.currentWeather.temperature) > 25) {
-          const result = !sport.isIndoor; // Suggest outdoor sports if it's hot
-          console.log(`Weather filter (Hot) - Sport: ${sport.name}, Result: ${result}`);
-          return result;
-        }
-      }
-      return true;
-    };
+    // Combine filters
+    const filteredSports = this.allSports.filter((sport) => {
+      return (
+        indoorFilter(sport) &&
+        typeFilter(sport) &&
+        equipmentFilter(sport) &&
+        intensityFilter(sport)
+      );
+    });
   
-     // Combine filters and apply
-  const filteredSports = this.allSports.filter((sport) => {
-    return (
-      indoorFilter(sport) &&
-      typeFilter(sport) &&
-      equipmentFilter(sport) &&
-      intensityFilter(sport) &&
-      weatherFilter(sport)
-    );
-  });
-
-  // Select random 3 results from filtered sports
-  this.sportsRecommendations = this.getRandomSports(filteredSports, 3);
-
-  console.log('Aanbevolen sporten:', this.sportsRecommendations);
-}
+    // Selecteer willekeurig 3 sporten
+    setTimeout(() => {
+      this.sportsRecommendations = this.getRandomSports(filteredSports, 3);
+      this.isLoadingRecommendations = false; // Zet de laadtoestand uit
+      console.log('Aanbevolen sporten:', this.sportsRecommendations);
+    }, 500); // Simuleer een laadtijd
+  }
+  
 private getRandomSports(sports: ISport[], count: number): ISport[] {
   const shuffled = [...sports].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
