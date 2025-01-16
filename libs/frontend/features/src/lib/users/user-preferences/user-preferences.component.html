@@ -1,12 +1,16 @@
 <div class="preferences-container card shadow-lg p-4 mx-auto">
-    <h2 class="text-center text-primary mb-4">User Preferences</h2>
+    <h2 class="text-center text-primary mb-4">
+        <i class="bi bi-sliders"></i> Sportvoorkeuren
+    </h2>
   
     <form [formGroup]="preferencesForm" (ngSubmit)="saveOrEditPreferences()" class="form-group">
       <!-- Sport Type -->
       <div class="mb-4">
-        <label for="sportType" class="form-label fw-bold">Select your favorite sport type:</label>
+        <label for="sportType" class="form-label fw-bold">
+            <i class="bi bi-tag"></i> Kies je favoriete sporttype:
+        </label>
         <select id="sportType" class="form-select" formControlName="sportType" [disabled]="preferencesForm.disabled">
-          <option [value]="''">No Preference</option>
+          <option [value]="''">Geen voorkeur</option>
           <option *ngFor="let sportType of availableSportTypes" [value]="sportType">
             {{ sportType }}
           </option>
@@ -15,9 +19,10 @@
   
       <!-- Indoor / Outdoor Selection -->
       <div class="mb-4">
-        <label for="isIndoor" class="form-label fw-bold">Do you prefer indoor or outdoor sports?</label>
+        <label for="isIndoor" class="form-label fw-bold">
+             <i class="bi bi-house"></i> Voorkeur voor binnen of buiten sporten:
+        </label>
         <select id="isIndoor" class="form-select" formControlName="isIndoor">
-          <option [value]="null">No Preference</option>
           <option [value]="true">Indoor</option>
           <option [value]="false">Outdoor</option>
         </select>
@@ -25,7 +30,9 @@
   
       <!-- Equipment -->
       <div class="mb-4">
-        <label for="equipment" class="form-label fw-bold">Select required equipment:</label>
+        <label for="equipment" class="form-label fw-bold">
+            <i class="bi bi-box"></i> Spullen die je hebt:
+        </label>
         <div *ngFor="let equipment of availableEquipment" class="form-check">
           <input
             class="form-check-input"
@@ -41,7 +48,9 @@
   
       <!-- Sport Intensity -->
       <div class="mb-4">
-        <label for="intensity" class="form-label fw-bold">Preferred Intensity Level:</label>
+        <label for="intensity" class="form-label fw-bold">
+            <i class="bi bi-lightning-charge"></i> Gewenste intensiteit:
+        </label>
         <select id="intensity" class="form-select" formControlName="intensity">
           <option [value]="''">No Preference</option>
           <option *ngFor="let intensity of availableIntensities" [value]="intensity">
@@ -50,11 +59,12 @@
         </select>
       </div>
   
+
       <!-- Save/Edit Button -->
       <div class="text-center">
         <button type="submit" class="btn btn-primary px-4 py-2 mt-4">
           <i class="bi" [ngClass]="isEditing ? 'bi-save' : 'bi-pencil'"></i>
-          {{ isEditing ? 'Save Preferences' : 'Edit Preferences' }}
+          {{ isEditing ? 'Voorkeuren Opslaan' : 'Voorkeuren Bewerken' }}
         </button>
       </div>
     </form>

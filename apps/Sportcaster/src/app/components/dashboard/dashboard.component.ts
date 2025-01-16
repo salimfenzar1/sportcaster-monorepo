@@ -166,16 +166,15 @@ export class DashboardComponent implements OnInit {
       : () => true;
   
     // Equipment filter
-    const equipmentFilter = this.preferences.equipment.length
-      ? (sport: ISport) => {
-          const sportEquipment = sport.equipment || [];
-          const result = this.preferences.equipment.every((item) =>
-            sportEquipment.includes(item as Equipment)
-          );
-          console.log(`Equipment filter - Sport: ${sport.name}, Result: ${result}`);
-          return result;
-        }
-      : () => true;
+    const equipmentFilter = (sport: ISport) => {
+      const sportEquipment = sport.equipment || [];
+      // Geen equipment nodig, of ten minste één match
+      return (
+        sportEquipment.length === 0 ||
+        sportEquipment.some((eq) => this.preferences.equipment.includes(eq))
+      );
+    };
+  
   
     // Intensity filter
     const intensityFilter = this.preferences.intensity

@@ -33,4 +33,9 @@ export class HeaderComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  getFormattedUsername(): string {
+    if (!this.username) return '';
+    return this.username.charAt(0).toUpperCase() + this.username.slice(1).toLowerCase();
+  }
 }

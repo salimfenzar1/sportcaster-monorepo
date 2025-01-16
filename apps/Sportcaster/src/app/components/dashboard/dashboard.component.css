@@ -190,6 +190,16 @@ button i {
 .responsive-width{
   width: 70%;
 }
+.form-check:hover {
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.form-check .form-check-label i {
+  margin-right: 5px;
+  color: #6c757d;
+}
 
 /* Responsive ontwerp */
 @media (max-width: 768px) {

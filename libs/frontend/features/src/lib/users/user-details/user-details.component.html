@@ -17,25 +17,25 @@
 
         <!-- User Info -->
         <div class="col-md-8">
-          <h4 class="text-primary">User Information</h4>
+          <h4 class="text-primary">Gebruikers informatie</h4>
           <hr />
-          <p><i class="bi bi-envelope-fill"></i> <strong>Email:</strong> {{ userDetails.emailAddress }}</p>
-          <p><i class="bi bi-person-badge-fill"></i> <strong>Role:</strong> {{ userDetails.role }}</p>
-          <p><i class="bi bi-gender-ambiguous"></i> <strong>Gender:</strong> {{ userDetails.gender }}</p>
+          <p><i class="bi bi-envelope-fill"></i> <strong> Email:</strong> {{ userDetails.emailAddress }}</p>
+          <p><i class="bi bi-person-badge-fill"></i> <strong> Rol:</strong> {{ userDetails.role }}</p>
+          <p><i class="bi bi-gender-ambiguous"></i> <strong> Gender:</strong> {{ userDetails.gender }}</p>
 
           <!-- Voorkeuren -->
-          <h4 class="text-primary mt-4">Preferences</h4>
+          <h4 class="text-primary mt-4">Voorkeuren</h4>
           <hr />
-          <p><i class="bi bi-heart-fill"></i> <strong>Sport Types:</strong> {{ userDetails.preferences?.sportTypes?.join(', ') || 'None' }}</p>
-          <p><i class="bi bi-tools"></i> <strong>Equipment:</strong> {{ userDetails.preferences?.equipment?.join(', ') || 'None' }}</p>
-          <p><i class="bi bi-lightning-fill"></i> <strong>Intensity:</strong> {{ userDetails.preferences?.intensity || 'None' }}</p>
+          <p><i class="bi bi-heart-fill"></i> <strong> Sport Types:</strong> {{ userDetails.preferences?.sportTypes?.join(', ') || 'None' }}</p>
+          <p><i class="bi bi-tools"></i> <strong> Benodigdheden:</strong> {{ userDetails.preferences?.equipment?.join(', ') || 'None' }}</p>
+          <p><i class="bi bi-lightning-fill"></i> <strong> Intensiteit:</strong> {{ userDetails.preferences?.intensity || 'None' }}</p>
         </div>
       </div>
 
       <!-- Bewerken knop -->
       <div class="text-center mt-4">
         <button class="btn btn-primary" [routerLink]="['/user', userDetails?._id, 'edit']">
-          <i class="bi bi-pencil-fill"></i> Edit Profile
+          <i class="bi bi-pencil-fill"></i> Bewerk Profiel
         </button>
       </div>
     </div>
@@ -43,7 +43,7 @@
 
   <ng-template #loading>
     <div class="text-center mt-4">
-      <p>Loading user details...</p>
+      <p>Laden van gebruikersgegevens...</p>
       <div class="spinner-border text-primary" role="status"></div>
     </div>
   </ng-template>

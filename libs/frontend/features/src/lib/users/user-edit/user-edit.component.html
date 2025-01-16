@@ -1,96 +1,110 @@
-<div class="container mt-4">
-  <h1 class="mb-4">Edit User</h1>
-  <form *ngIf="userForm" [formGroup]="userForm" (ngSubmit)="submitForm()">
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="alert alert-danger">
-      {{ errorMessage }}
-    </div>
-
-    <!-- Name Field -->
-    <div class="mb-3">
-      <label for="name" class="form-label">Name</label>
-      <input
-        type="text"
-        id="name"
-        formControlName="name"
-        class="form-control"
-        placeholder="Enter your name"
-        required
-      />
-      <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched" class="text-danger mt-1">
-        Name is required.
+<div class="container mt-5">
+  <div class="card shadow-lg p-4 user-card">
+    <h2 class="text-center text-primary">
+      <i class="bi bi-pencil-fill"></i> Bewerk Gebruiker
+    </h2>
+    <form *ngIf="userForm" [formGroup]="userForm" (ngSubmit)="submitForm()">
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
       </div>
-    </div>
 
-    <!-- Email Field -->
-    <div class="mb-3">
-      <label for="emailAddress" class="form-label">Email</label>
-      <input
-        type="email"
-        id="emailAddress"
-        formControlName="emailAddress"
-        class="form-control"
-        placeholder="Enter your email"
-        required
-      />
-      <div *ngIf="userForm.get('emailAddress')?.invalid && userForm.get('emailAddress')?.touched" class="text-danger mt-1">
-        A valid email address is required.
+      <!-- Name Field -->
+      <div class="mb-4">
+        <label for="name" class="form-label fw-bold">
+          <i class="bi bi-person-fill"></i> Naam
+        </label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          class="form-control"
+          placeholder="Vul je naam in"
+          required
+        />
+        <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched" class="text-danger mt-1">
+          Naam is verplicht.
+        </div>
       </div>
-    </div>
 
-    <!-- Role Field -->
-    <div class="mb-3">
-      <label for="role" class="form-label">Role</label>
-      <select id="role" formControlName="role" class="form-select" required>
-        <option value="Unknown">Unknown</option>
-        <option value="Admin">Admin</option>
-        <option value="Guest">Guest</option>
-      </select>
-      <div *ngIf="userForm.get('role')?.invalid && userForm.get('role')?.touched" class="text-danger mt-1">
-        Role is required.
+      <!-- Email Field -->
+      <div class="mb-4">
+        <label for="emailAddress" class="form-label fw-bold">
+          <i class="bi bi-envelope-fill"></i> E-mail
+        </label>
+        <input
+          type="email"
+          id="emailAddress"
+          formControlName="emailAddress"
+          class="form-control"
+          placeholder="Vul je e-mailadres in"
+          required
+        />
+        <div *ngIf="userForm.get('emailAddress')?.invalid && userForm.get('emailAddress')?.touched" class="text-danger mt-1">
+          Een geldig e-mailadres is verplicht.
+        </div>
       </div>
-    </div>
 
-    <!-- Gender Field -->
-    <div class="mb-3">
-      <label for="gender" class="form-label">Gender</label>
-      <select id="gender" formControlName="gender" class="form-select" required>
-        <option value="Unknown">Unknown</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
-      <div *ngIf="userForm.get('gender')?.invalid && userForm.get('gender')?.touched" class="text-danger mt-1">
-        Gender is required.
+      <!-- Role Field -->
+      <div class="mb-4">
+        <label for="role" class="form-label fw-bold">
+          <i class="bi bi-person-badge-fill"></i> Rol
+        </label>
+        <select id="role" formControlName="role" class="form-select" required>
+          <option value="Unknown">Onbekend</option>
+          <option value="Admin">Admin</option>
+          <option value="Guest">Gast</option>
+        </select>
+        <div *ngIf="userForm.get('role')?.invalid && userForm.get('role')?.touched" class="text-danger mt-1">
+          Rol is verplicht.
+        </div>
       </div>
-    </div>
 
-    <!-- IsActive Checkbox -->
-    <div class="form-check mb-3">
-      <input
-        type="checkbox"
-        id="isActive"
-        formControlName="isActive"
-        class="form-check-input"
-      />
-      <label for="isActive" class="form-check-label">Active</label>
-    </div>
+      <!-- Gender Field -->
+      <div class="mb-4">
+        <label for="gender" class="form-label fw-bold">
+          <i class="bi bi-gender-ambiguous"></i> Geslacht
+        </label>
+        <select id="gender" formControlName="gender" class="form-select" required>
+          <option value="Unknown">Onbekend</option>
+          <option value="Male">Man</option>
+          <option value="Female">Vrouw</option>
+        </select>
+        <div *ngIf="userForm.get('gender')?.invalid && userForm.get('gender')?.touched" class="text-danger mt-1">
+          Geslacht is verplicht.
+        </div>
+      </div>
 
-    <!-- Action Buttons -->
-    <div class="d-flex justify-content-end">
-      <button
-        type="submit"
-        class="btn btn-primary me-2"
-        [disabled]="userForm.invalid"
-      >
-        Save Changes
-      </button>
-      <button
-        type="button"
-        class="btn btn-secondary"
-        (click)="cancel()"
-      >
-        Cancel
-      </button>
-    </div>
-  </form>
+      <!-- IsActive Checkbox -->
+      <div class="form-check mb-4">
+        <input
+          type="checkbox"
+          id="isActive"
+          formControlName="isActive"
+          class="form-check-input"
+        />
+        <label for="isActive" class="form-check-label fw-bold">
+          <i class="bi bi-check-circle-fill"></i> Actief
+        </label>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <button
+          type="submit"
+          class="btn btn-primary px-4"
+          [disabled]="userForm.invalid"
+        >
+          <i class="bi bi-save"></i> Wijzigingen Opslaan
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary px-4"
+          (click)="cancel()"
+        >
+          <i class="bi bi-x-circle"></i> Annuleer
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
