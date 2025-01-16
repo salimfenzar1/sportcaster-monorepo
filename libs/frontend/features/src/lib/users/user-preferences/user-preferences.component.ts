@@ -82,10 +82,12 @@ export class UserPreferencesComponent implements OnInit {
   saveOrEditPreferences(): void {
     if (this.isEditing) {
       // Haal bijgewerkte voorkeuren op uit het formulier
-      const updatedPreferences = {
-        ...this.preferencesForm.value,
-        isIndoor: this.preferencesForm.value.isIndoor === '' ? null : this.preferencesForm.value.isIndoor, // Converteer lege string naar null
-      };
+      const updatedPreferences = { ...this.preferencesForm.value };
+  
+      // Verwijder isIndoor als de waarde null is
+      if (updatedPreferences.isIndoor === null) {
+        delete updatedPreferences.isIndoor;
+      }
   
       this.userService.updateUserPreferences(this.user._id, updatedPreferences).subscribe({
         next: () => {

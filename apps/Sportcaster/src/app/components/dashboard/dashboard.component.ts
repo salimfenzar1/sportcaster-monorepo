@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
   equipmentOptions = Object.values(Equipment);
   forecastBackgroundCondition: string = '';
   isLoggedIn: boolean = false;
+  isLoadingWeather = false;
 
 
   preferences = {
@@ -230,6 +231,7 @@ private getRandomSports(sports: ISport[], count: number): ISport[] {
 }
 
   getCurrentLocation(): void {
+    this.isLoadingWeather = true;
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -241,14 +243,17 @@ private getRandomSports(sports: ISport[], count: number): ISport[] {
         (error) => {
           console.error('Error fetching location:', error);
           alert('Unable to fetch your location. Please enable location services.');
+          this.isLoadingWeather = false;
         }
       );
     } else {
       alert('Geolocation is not supported by your browser.');
+      this.isLoadingWeather = false;
     }
   }
 
   refreshWeather(): void {
+    this.isLoadingWeather = true; 
     if (this.isCurrentLocation) {
       this.getCurrentLocation();
     } else {
@@ -265,6 +270,7 @@ private getRandomSports(sports: ISport[], count: number): ISport[] {
 
     const location = this.enteredLocation.trim();
     this.isCurrentLocation = false;
+    this.isLoadingWeather = true;
 
     this.weatherHelperService.getLocationDetails(location).subscribe({
       next: (response) => {
@@ -274,11 +280,13 @@ private getRandomSports(sports: ISport[], count: number): ISport[] {
           this.updateWeatherData(latitude, longitude);
         } else {
           alert('Geen locatie gevonden voor deze stad.');
+          this.isLoadingWeather = false;
         }
       },
       error: (error) => {
         console.error('Fout bij het ophalen van coördinaten:', error);
         alert('Er is een fout opgetreden bij het zoeken naar deze locatie.');
+        this.isLoadingWeather = false;
       },
     });
   }
@@ -343,10 +351,12 @@ private getRandomSports(sports: ISport[], count: number): ISport[] {
         this.currentWeatherCondition = this.weatherHelperService.determineBackgroundCondition(
           this.currentWeather.condition
         );
+        this.isLoadingWeather = false; 
       },
       error: (error) => {
         console.error('Fout bij het ophalen van de weergegevens:', error);
         alert('Er is een fout opgetreden bij het ophalen van de weergegevens.');
+        this.isLoadingWeather = false;
       },
     });
   }
