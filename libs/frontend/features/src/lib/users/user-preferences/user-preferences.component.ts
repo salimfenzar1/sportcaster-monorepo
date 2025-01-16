@@ -22,6 +22,10 @@ export class UserPreferencesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserPreferences();
+    this.preferencesForm = this.fb.group({
+      isIndoor: [{ value: this.user.preferences?.isIndoor, disabled: true }],
+      sportTypes: [{ value: this.user?.preferences?.sportTypes || [], disabled: true }],
+    })
   }
 
   loadUserPreferences(): void {
@@ -40,7 +44,7 @@ export class UserPreferencesComponent implements OnInit {
 
         // Initialize the form with user preferences
         this.preferencesForm = this.fb.group({
-          sportType: [this.user.preferences.sportTypes[0] || ''], // Single selection for sport type
+          sportTypes: [this.user.preferences.sportTypes || []], // Single selection for sport type
           isIndoor: [this.user.preferences.isIndoor],
           equipment: [this.user.preferences.equipment || []],
           intensity: [this.user.preferences.intensity || SportIntensity.Medium],
@@ -53,6 +57,20 @@ export class UserPreferencesComponent implements OnInit {
         console.error('Error loading preferences:', err);
       },
     });
+  }
+  toggleSportTypeSelection(sportType: string): void {
+    const selectedSportTypes = this.preferencesForm.value.sportTypes || [];
+    if (selectedSportTypes.includes(sportType)) {
+      // Remove the sport type
+      this.preferencesForm.patchValue({
+        sportTypes: selectedSportTypes.filter((type: string) => type !== sportType),
+      });
+    } else {
+      // Add the sport type
+      this.preferencesForm.patchValue({
+        sportTypes: [...selectedSportTypes, sportType],
+      });
+    }
   }
 
   toggleSelection(field: string, value: string): void {
@@ -74,8 +92,11 @@ export class UserPreferencesComponent implements OnInit {
     // Enable or disable form controls based on isEditing
     if (this.isEditing) {
       this.preferencesForm.enable();
+      this.preferencesForm.get('isIndoor')?.enable(); 
     } else {
       this.preferencesForm.disable();
+      this.preferencesForm.get('isIndoor')?.disable(); 
+      this.preferencesForm.get('sportTypes')?.disable();
     }
   }
 

@@ -4,25 +4,48 @@
     </h2>
   
     <form [formGroup]="preferencesForm" (ngSubmit)="saveOrEditPreferences()" class="form-group">
-      <!-- Sport Type -->
-      <div class="mb-4">
-        <label for="sportType" class="form-label fw-bold">
-            <i class="bi bi-tag"></i> Kies je favoriete sporttype:
-        </label>
-        <select id="sportType" class="form-select" formControlName="sportType" [disabled]="preferencesForm.disabled">
-          <option [value]="''">Geen voorkeur</option>
-          <option *ngFor="let sportType of availableSportTypes" [value]="sportType">
-            {{ sportType }}
-          </option>
-        </select>
-      </div>
+        <div class="mb-4">
+            <label for="sportTypes" class="form-label fw-bold">
+              <i class="bi bi-tag"></i> Kies je favoriete sporttypes:
+            </label>
+            <div class="dropdown">
+              <button 
+                class="btn btn-primary dropdown-toggle w-100" 
+                type="button" 
+                id="dropdownSportTypes" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false"
+                [disabled]="!isEditing"
+              >
+                Selecteer sporttypes
+              </button>
+              <ul class="dropdown-menu w-100" aria-labelledby="dropdownSportTypes">
+                <li *ngFor="let sportType of availableSportTypes" class="dropdown-item">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [id]="sportType"
+                      [value]="sportType"
+                      (change)="toggleSportTypeSelection(sportType)"
+                      [checked]="preferencesForm.value.sportTypes.includes(sportType)"
+                    />
+                    <label class="form-check-label" [for]="sportType">
+                      {{ sportType }}
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
   
       <!-- Indoor / Outdoor Selection -->
       <div class="mb-4">
         <label for="isIndoor" class="form-label fw-bold">
              <i class="bi bi-house"></i> Voorkeur voor binnen of buiten sporten:
         </label>
-        <select id="isIndoor" class="form-select" formControlName="isIndoor">
+        <select id="isIndoor" class="form-select" formControlName="isIndoor"  >
           <option [value]="true">Indoor</option>
           <option [value]="false">Outdoor</option>
         </select>
