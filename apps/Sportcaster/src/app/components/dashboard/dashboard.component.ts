@@ -31,7 +31,8 @@ export class DashboardComponent implements OnInit {
   isLoadingWeather = false;
   showPreferences: boolean = false;
   isLoadingRecommendations: boolean = false;
-
+  originalSports: ISport[] = []; // Toegevoegd: bewaar originele sporten
+  
 
   preferences = {
     indoor: null as boolean | null,
@@ -79,7 +80,8 @@ export class DashboardComponent implements OnInit {
   loadAllSports(): void {
     this.sportService.findAll().subscribe({
       next: (sports) => {
-        this.allSports = sports;
+        this.allSports = [...sports]; // Kopieer data naar allSports
+        this.originalSports = [...sports]; // Bewaar originele lijst
         console.log('Sporten uit de database:', this.allSports);
       },
       error: (err) => {
@@ -87,6 +89,7 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
+  
   toggleEquipment(equipment: Equipment): void {
     const index = this.preferences.equipment.indexOf(equipment);
     if (index > -1) {
@@ -139,17 +142,27 @@ export class DashboardComponent implements OnInit {
     console.log('Huidige voorkeuren:', this.preferences);
   
     this.isLoadingRecommendations = true; // Zet de laadtoestand aan
+    this.allSports = [...this.originalSports]; // Reset naar originele sporten
+  
+    // Converteer indoor naar een boolean als het een string is
+    if (typeof this.preferences.indoor === 'string') {
+      this.preferences.indoor =
+        this.preferences.indoor === 'true' ? true : this.preferences.indoor === 'false' ? false : null;
+    }
+  
+    console.log('Indoor voorkeur na conversie:', this.preferences.indoor);
   
     // Indoor filter
     const indoorFilter = this.preferences.indoor !== null
       ? (sport: ISport) => sport.isIndoor === this.preferences.indoor
       : () => true;
   
-    // Type filter
-    const typeFilter = this.preferences.type
-      ? (sport: ISport) => sport.type === this.preferences.type
-      : () => true;
-  
+   // Type filter
+const typeFilter = this.preferences.type
+? (sport: ISport) =>
+    sport.type.toLowerCase() === this.preferences.type.toLowerCase()
+: () => true;
+
     // Equipment filter
     const equipmentFilter = (sport: ISport) => {
       const sportEquipment = sport.equipment || [];
@@ -181,6 +194,7 @@ export class DashboardComponent implements OnInit {
       console.log('Aanbevolen sporten:', this.sportsRecommendations);
     }, 500); // Simuleer een laadtijd
   }
+  
   
 private getRandomSports(sports: ISport[], count: number): ISport[] {
   const shuffled = [...sports].sort(() => 0.5 - Math.random());
