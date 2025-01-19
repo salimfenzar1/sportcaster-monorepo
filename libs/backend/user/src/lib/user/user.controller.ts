@@ -12,7 +12,7 @@ import {
     UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { IUserInfo, IUser } from '../../../../../shared/api/src';
+import { IUserInfo, IUser, SportType, Equipment, SportIntensity } from '../../../../../shared/api/src';
 import { CreateUserDto, UpdateUserDto } from '../../../../dto/src/lib/user.dto';
 import { UserExistGuard } from './user-exists.guard';
 import { AuthGuard } from 'libs/backend/auth/src/lib/auth/auth.guards';
@@ -67,6 +67,21 @@ export class UserController {
     ): Promise<IUserInfo | null> {
         return this.userService.update(id, user);
     }
+
+     // ✅ Voeg GET /user/:id/preferences toe om voorkeuren op te halen
+     @Get(':id/preferences')
+     async getUserPreferences(@Param('id') id: string): Promise<{ sportTypes: SportType[]; isIndoor: boolean; equipment: Equipment[]; intensity: SportIntensity }> {
+         return this.userService.getUserPreferences(id);
+     }
+ 
+     // ✅ Voeg PUT /user/:id/preferences toe om voorkeuren te updaten
+     @Put(':id/preferences')
+     async updateUserPreferences(
+         @Param('id') id: string,
+         @Body() preferences: { sportTypes: SportType[]; isIndoor: boolean; equipment: Equipment[]; intensity: SportIntensity }
+     ): Promise<IUserInfo | null> {
+         return this.userService.updatePreferences(id, preferences);
+     }
 
     
 

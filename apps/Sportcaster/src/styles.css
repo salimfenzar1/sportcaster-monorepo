@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    /* Primaire kleur - Blauw */
+    --bs-primary: #007BFF !important;
+    --bs-btn-bg: var(--bs-primary) !important;
+    --bs-btn-border-color: var(--bs-primary) !important;
+    --bs-btn-hover-bg: #0056b3 !important;
+    --bs-btn-hover-border-color: #004085 !important;
+
+    /* Secundaire kleur - Groen */
+    --bs-success: #28A745 !important;
+    --bs-btn-success-bg: var(--bs-success) !important;
+    --bs-btn-success-border-color: var(--bs-success) !important;
+    --bs-btn-success-hover-bg: #218838 !important;
+    --bs-btn-success-hover-border-color: #1e7e34 !important;
+
+    /* Waarschuwingen - Geel */
+    --bs-warning: #FFC107 !important;
+
+    /* Achtergrond- en tekstkleuren */
+    --bs-body-bg: #F5F9FF !important;
+    --bs-body-color: #343A40 !important;
+
+    /* Andere kleuren */
+    --bs-danger: #FF5733 !important; /* Oranje */
+    --bs-light: #F8F9FA !important; /* Lichtgrijs */
+    --bs-dark: #343A40 !important; /* Donkergrijs */
+}
+
+.active {
+    font-style: bold;
+}

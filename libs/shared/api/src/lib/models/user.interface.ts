@@ -3,6 +3,7 @@
 // import { IEntity } from 'libs/share-a-meal/common/src/lib/entity/entity.model';
 import { IToken, IUserRegistration } from './auth.interface';
 import { Id } from './id.type';
+import { Equipment, SportIntensity, SportType } from './sport.interface';
 
 export enum UserRole {
     Guest = 'Guest',
@@ -40,7 +41,14 @@ export interface IUserInfo extends IUserRegistration {
     role: UserRole;
     gender: UserGender;
     isActive: boolean;
+    preferences?: {
+        sportTypes: SportType[];
+        isIndoor: boolean | null;
+        equipment: Equipment[];
+        intensity: SportIntensity;
+    };
 }
+
 
 /**
  * All user information, incl. domain entities

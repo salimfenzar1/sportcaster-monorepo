@@ -34,4 +34,11 @@ export class UserService {
     return this.http.get<IUserInfo>(`${this.apiUrl}/me`, { headers });
   }
   
+  getUserPreferences(id: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/${id}/preferences`);
+  }
+
+  updateUserPreferences(id: string, preferences: string[]): Observable<IUserInfo> {
+    return this.http.put<IUserInfo>(`${this.apiUrl}/${id}/preferences`, preferences);
+  }
 }

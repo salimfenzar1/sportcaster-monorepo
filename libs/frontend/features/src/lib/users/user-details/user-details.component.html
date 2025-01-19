@@ -1,30 +1,50 @@
-<div class="container mt-4">
-    <h1>User Details</h1>
-
-    <div *ngIf="userDetails; else loading">
-        <p><strong>Name:</strong> {{ userDetails.name }}</p>
-        <p><strong>Email:</strong> {{ userDetails.emailAddress }}</p>
-        <p><strong>Role:</strong> {{ userDetails.role }}</p>
-        <p><strong>Gender:</strong> {{ userDetails.gender }}</p>
-        <p>
-            <strong>Status:</strong>
+<div class="container mt-5">
+  <div *ngIf="userDetails; else loading">
+    <div class="card shadow-lg p-4 user-card">
+      <div class="row">
+        <!-- Profielfoto -->
+        <div class="col-md-4 text-center">
+          <img
+            [src]="userDetails.profileImgUrl || 'assets/default-avatar.png'"
+            alt="Profile Image"
+            class="profile-img rounded-circle"
+          />
+          <h3 class="mt-3">{{ userDetails.name }}</h3>
+          <span class="badge" [ngClass]="userDetails.isActive ? 'badge-success' : 'badge-danger'">
             {{ userDetails.isActive ? 'Active' : 'Inactive' }}
-        </p>
-        <img
-            *ngIf="userDetails.profileImgUrl"
-            [src]="userDetails.profileImgUrl"
-            alt="{{ userDetails.name }}'s profile"
-            width="100"
-        />
-        <button
-            class="btn btn-primary mt-3"
-            [routerLink]="['/user', userDetails?._id, 'edit']"
-        >
-            Edit Details
-        </button>
-    </div>
+          </span>
+        </div>
 
-    <ng-template #loading>
-        <p>Loading user details...</p>
-    </ng-template>
+        <!-- User Info -->
+        <div class="col-md-8">
+          <h4 class="text-primary">Gebruikers informatie</h4>
+          <hr />
+          <p><i class="bi bi-envelope-fill"></i> <strong> Email:</strong> {{ userDetails.emailAddress }}</p>
+          <p><i class="bi bi-person-badge-fill"></i> <strong> Rol:</strong> {{ userDetails.role }}</p>
+          <p><i class="bi bi-gender-ambiguous"></i> <strong> Gender:</strong> {{ userDetails.gender }}</p>
+
+          <!-- Voorkeuren -->
+          <h4 class="text-primary mt-4">Voorkeuren</h4>
+          <hr />
+          <p><i class="bi bi-heart-fill"></i> <strong> Sport Types:</strong> {{ userDetails.preferences?.sportTypes?.join(', ') || 'None' }}</p>
+          <p><i class="bi bi-tools"></i> <strong> Benodigdheden:</strong> {{ userDetails.preferences?.equipment?.join(', ') || 'None' }}</p>
+          <p><i class="bi bi-lightning-fill"></i> <strong> Intensiteit:</strong> {{ userDetails.preferences?.intensity || 'None' }}</p>
+        </div>
+      </div>
+
+      <!-- Bewerken knop -->
+      <div class="text-center mt-4">
+        <button class="btn btn-primary" [routerLink]="['/user', userDetails?._id, 'edit']">
+          <i class="bi bi-pencil-fill"></i> Bewerk Profiel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="text-center mt-4">
+      <p>Laden van gebruikersgegevens...</p>
+      <div class="spinner-border text-primary" role="status"></div>
+    </div>
+  </ng-template>
 </div>

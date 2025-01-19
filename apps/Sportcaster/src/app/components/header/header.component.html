@@ -1,4 +1,4 @@
-<header class="header bg-light shadow-sm">
+<header style="padding: 0px !important;" class="header bg-light shadow-sm">
   <nav class="navbar navbar-expand-lg navbar-light container">
     <!-- Logo -->
     <a class="navbar-brand d-flex align-items-center" routerLink="/">
@@ -35,7 +35,7 @@
 
         <!-- Ingelogd -->
         <ng-template #loggedIn>
-          <div class="dropdown">
+          <div class="dropdown" style="margin: 10px;">
             <a
               class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
               id="userDropdown"
@@ -44,10 +44,10 @@
               role="button"
             >
               <span class="fw-bold text-primary text-truncate" style="max-width: 150px;">
-                {{ username }} 
+                Welkom {{ getFormattedUsername() }}
               </span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
               <li>
                 <a class="dropdown-item" routerLink="/user/details">
                   <i class="bi bi-person-fill me-2"></i>Profiel

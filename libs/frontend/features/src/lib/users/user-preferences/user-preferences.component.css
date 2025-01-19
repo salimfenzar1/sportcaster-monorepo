@@ -1,0 +1,61 @@
+.preferences-container {
+    max-width: 600px;
+    border-radius: 10px;
+    background: #fff;
+  }
+  
+  .preferences-container h2 {
+    font-size: 1.5rem;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  .form-check-label,
+  .form-label {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  .form-select,
+  .form-check-input {
+    font-size: 1rem;
+    padding: 8px;
+  }
+  
+  .form-check-input {
+    margin-right: 10px;
+  }
+  
+  .form-check {
+    margin-bottom: 10px;
+  }
+  
+  .btn-primary {
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .card {
+    margin-top: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border: none;
+  }
+  
+  .mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .dropdown-menu {
+    max-height: 300px;
+    overflow-y: auto;
+    width: 100%;
+  }
+  
