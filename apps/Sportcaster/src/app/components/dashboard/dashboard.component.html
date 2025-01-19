@@ -58,14 +58,14 @@
  <div class="d-flex justify-content-end align-items-center mt-5 gap-3 responsive-flex">
   <!-- Knop voor sportvoorkeuren -->
   <button
-    class="btn btn-primary responsive-btn w-100 resp-btn"
+    class="btn btn-primary responsive-btn resp-btn voorkeur-btn"
     (click)="openPreferencesModal()"
   >
-  <i class="bi bi-sliders me-2"></i> Stel sportvoorkeuren in
+  <i class="bi bi-sliders me-2"></i> Sport voorkeuren
   </button>
   <button
   *ngIf="isLoggedIn"
-  class="btn btn-secondary responsive-btn w-100"
+  class="btn btn-secondary responsive-btn voorkeur-btn"
   (click)="getCurrentPreferences()"
   
 >
@@ -73,7 +73,7 @@
 </button>
 
   <!-- Zoekbalk met automatische suggesties -->
-  <div class="search-bar-container position-relative responsive-width">
+  <div class="search-bar-container position-relative responsive-width ">
     <div class="input-group">
       <input
         type="text"
@@ -206,18 +206,22 @@
     </div>
 
         <!-- Toggle knop voor weersvoorspelling -->
-        <div class="d-flex justify-content-end mt-4">
+        <div class="d-flex justify-content-center mt-4 weatherforecast-btn">
           <button
           *ngIf="currentWeather"
             class="btn btn-primary"
             (click)="toggleForecast()"
           >
-            {{ showForecast ? 'Verberg Weersvoorspelling' : 'Toon Weersvoorspelling' }}
+            {{ showForecast 
+                ? 'Verberg Weersvoorspelling' 
+                : 'Toon Weersvoorspelling' 
+            }}
           </button>
         </div>
+
         <div *ngIf="showForecast" [ngClass]="forecastBackgroundCondition" class="forecast-container mt-4">
-          <div class="card shadow-lg text-white forecast-card">
-            <div class="card-header text-center">
+          <div class="card shadow-lg bg-primary text-white forecast-card">
+            <div class="card-header bg-primary text-center">
               <h3>3-Uurs Weersvoorspelling</h3>
             </div>
             <div class="card-body">

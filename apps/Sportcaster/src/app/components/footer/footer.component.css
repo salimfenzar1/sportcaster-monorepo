@@ -1,0 +1,9 @@
+.logo {
+    height: 75px;
+    width: auto;
+    max-height: 100%;
+    object-fit: contain;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  

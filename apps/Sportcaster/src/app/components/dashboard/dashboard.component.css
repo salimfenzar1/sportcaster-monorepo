@@ -183,7 +183,6 @@ button i {
 
 /* Aanbevelingen styling */
 .recommendations-container {
-  background: linear-gradient(to bottom, #ffffff, #f8f9fa);
   padding: 20px;
   border-radius: 12px;
 }
@@ -208,6 +207,71 @@ button i {
   font-size: 1rem;
 }
 
+.voorkeur-btn {
+  width: 40%;
+  background: transparent;
+  border: 2px solid #007bff;
+  border-radius: 50px;
+  padding: 10px 0px;
+  color: #007bff;
+}
+.border-rds{
+  background: transparent;
+  border: 2px solid #007bff;
+  border-radius: 50px;
+  padding: 10px 0px;
+  color: #007bff;
+}
+.border-rds:hover{
+  background: #007bff;
+  color: white;
+}
+.voorkeur-btn:hover {
+  background: #007bff;
+  color: white;
+}
+/* Zoekbalk en dropdown */
+.list-group {
+  position: absolute;
+  z-index: 1050;
+  background: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.list-group-item {
+  cursor: pointer;
+  padding: 10px;
+}
+.search-bar-container input {
+  border-radius: 50px;
+  padding: 10px 20px;
+}
+
+.search-bar-container button {
+  border: none;
+  border-radius: 0px 50px 50px 0px;
+  padding: 0px 20px;
+}
+
+.weatherforecast-btn button {
+  background-color: #007bff;
+  color: white;
+  border: 2px solid #007bff;
+  border-radius: 50px;
+  padding: 10px 20px;
+  margin-top: 30px;
+}
+
+.weatherforecast-btn button:hover {
+  background-color: white;
+  color: #007bff;
+}
+
+
+
 /* Responsive ontwerp */
 @media (max-width: 768px) {
   .row.mb-4 {
@@ -217,6 +281,10 @@ button i {
   .responsive-width{
     width: 100%;
   }
+  .voorkeur-btn {
+    width: 100%;
+  }
+
 
   .input-group {
     margin-top: 15px;
@@ -225,6 +293,7 @@ button i {
   .search-bar-container {
     width: 100%;
   }
+  
   .resp-btn{
     margin-bottom: 5px;
   }
