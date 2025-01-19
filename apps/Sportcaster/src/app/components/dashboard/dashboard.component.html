@@ -1,228 +1,269 @@
-<div class="weather-dashboard container-fluid">
-  <div class="container">
-    <div class="row mb-4 justify-content-between align-items-center">
-      <div class="col-auto"></div>
- <!-- Knop om voorkeuren te openen -->
- <div *ngIf="showPreferences">
-  <!-- Laadindicator -->
-  <div *ngIf="isLoadingRecommendations" class="text-center mt-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Sportaanbevelingen worden geladen...</span>
-    </div>
-    <p class="text-muted mt-2">Sportaanbevelingen worden geladen...</p>
-  </div>
-
-  <!-- Aanbevolen sporten -->
-  <div *ngIf="!isLoadingRecommendations && sportsRecommendations.length > 0" class="recommendations-container mt-5">
-    <h3 class="text-center text-primary mb-4">
-      <i class="bi bi-stars"></i> Aanbevolen Sporten
-    </h3>
-    <div class="row g-4">
-      <div class="col-md-4" *ngFor="let sport of sportsRecommendations">
-        <div class="card shadow-lg border-0">
-          <div class="card-header bg-primary text-white text-center">
-            <i class="bi bi-trophy-fill"></i> {{ sport.name }}
+<div class="dashboard-wrapper">
+  <div class="weather-dashboard container-fluid">
+    <div class="container">
+      <div class="row mb-4 justify-content-between align-items-center">
+        <div class="col-auto"></div>
+        <!-- Knop om voorkeuren te openen -->
+        <div *ngIf="showPreferences">
+          <!-- Laadindicator -->
+          <div *ngIf="isLoadingRecommendations" class="text-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden"
+                >Sportaanbevelingen worden geladen...</span
+              >
+            </div>
+            <p class="text-muted mt-2">Sportaanbevelingen worden geladen...</p>
           </div>
-          <div class="card-body">
-            <p>
-              <i class="bi bi-tools"></i> <strong> Benodigdheden:</strong> 
-              {{ sport.equipment?.join(', ') || 'Geen' }}
-            </p>
-            <p>
-              <i class="bi bi-lightning-charge"></i> <strong> Intensiteit:</strong> 
-              {{ sport.intensity }}
-            </p>
-            <p>
-              <i class="bi bi-house"></i> <strong> Binnen of Buiten:</strong> 
-              {{ sport.isIndoor ? 'Binnen' : 'Buiten' }}
-            </p>
-            <p>
-              <i class="bi bi-tags"></i> <strong> Type sport:</strong> 
-              {{ sport.type }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Geen resultaten -->
-  <div *ngIf="!isLoadingRecommendations && sportsRecommendations.length === 0" class="text-center mt-5">
-    <h4 class="text-danger"><i class="bi bi-exclamation-circle-fill"></i> Geen sporten beschikbaar</h4>
-    <p class="text-muted">
-      Er zijn geen sporten beschikbaar op basis van je huidige voorkeuren. Pas je filters aan om meer sporten te ontdekken.
-    </p>
-  </div>
-</div>
-
- <div class="d-flex justify-content-end align-items-center mt-5 gap-3 responsive-flex">
-  <!-- Knop voor sportvoorkeuren -->
-  <button
-    class="btn btn-primary responsive-btn w-100 resp-btn"
-    (click)="openPreferencesModal()"
-  >
-  <i class="bi bi-sliders me-2"></i> Stel sportvoorkeuren in
-  </button>
-  <button
-  *ngIf="isLoggedIn"
-  class="btn btn-secondary responsive-btn w-100"
-  (click)="getCurrentPreferences()"
-  
->
-<i class="bi bi-lightbulb me-2"></i> Jouw suggesties
-</button>
-
-  <!-- Zoekbalk met automatische suggesties -->
-  <div class="search-bar-container position-relative responsive-width">
-    <div class="input-group">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Zoek op stad"
-        [(ngModel)]="enteredLocation"
-        (keyup)="onCityInput()"
-        (keyup.enter)="searchWeather()"
-      />
-      <button
-        class="btn btn-primary"
-        type="button"
-        (click)="searchWeather()"
-      >
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-
-    <!-- Dropdown voor stadssuggesties -->
-    <ul
-      *ngIf="suggestedCities.length"
-      class="list-group shadow"
-      style="position: absolute; top: 100%; left: 0; width: 100%"
-    >
-      <li
-        *ngFor="let city of suggestedCities"
-        class="list-group-item list-group-item-action"
-        (click)="selectCity(city)"
-        tabindex="0"
-      >
-        {{ city.name }}
-      </li>
-    </ul>
-  </div>
-</div>
-<div *ngIf="isLoadingWeather" class="d-flex justify-content-center align-items-center" style="height: 100px;">
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>
-
-    <!-- Huidig weer -->
-    <div *ngIf="currentWeather" class="row g-4 align-items-stretch">
-      <div class="col-12 col-md-4">
-        <div
-          style="border: none !important"
-          [ngClass]="currentWeatherCondition"
-          class="card text-white h-100 weather-dashboard"
-        >
+          <!-- Aanbevolen sporten -->
           <div
-            style="justify-content: normal !important"
-            class="card-body card-body-weather text-center"
-          >
-            <button
-              style="margin-left: auto"
-              class="btn"
-              (click)="refreshWeather()"
-            >
-              <i style="font-size: 1.4rem" class="bi bi-arrow-clockwise refreshbtn"></i>
-            </button>
-            <span *ngIf="isCurrentLocation" class="badge bg-success mb-2"
-              >Huidige Locatie</span
-            >
-            <img
-              [src]="
-                weatherHelperService.getWeatherIcon(currentWeather.condition)
-              "
-              alt="Weather Icon"
-              style="width: 100px; height: 100px"
-            />
-            <h4 class="card-title mb-2 stroke">
-              {{ currentWeather.location }}
-            </h4>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-8">
-        <div class="row g-3">
-          <div
-            class="col-6 col-md-4"
-            *ngFor="
-              let metric of [
-                {
-                  title: 'Temperatuur',
-                  value: currentWeather.temperature,
-                  icon: 'thermometer-half'
-                },
-                {
-                  title: 'Voelt als',
-                  value: currentWeather.feelsLike,
-                  icon: 'thermometer-sun'
-                },
-                {
-                  title: 'Vochtigheid',
-                  value: currentWeather.humidity,
-                  icon: 'droplet'
-                },
-                {
-                  title: 'Weerconditie',
-                  value: currentWeather.condition,
-                  icon: 'cloud'
-                },
-                {
-                  title: 'Windsnelheid',
-                  value: currentWeather.windSpeed,
-                  icon: 'wind'
-                },
-                {
-                  title: 'Neerslag',
-                  value: currentWeather.precipitation,
-                  icon: 'cloud-rain'
-                }
-              ]
+            *ngIf="
+              !isLoadingRecommendations && sportsRecommendations.length > 0
             "
+            class="recommendations-container mt-5"
           >
-            <div class="card text-white bg-primary shadow h-100">
-              <div class="card-body text-center">
-                <i
-                  class="bi bi-{{ metric.icon }} mb-3"
-                  style="font-size: 1.5rem"
-                ></i>
-                <h6 class="card-title">{{ metric.title }}</h6>
-                <p class="card-text">{{ metric.value }}</p>
+            <h3 class="text-center text-primary mb-4">
+              <i class="bi bi-stars"></i> Aanbevolen Sporten
+            </h3>
+            <div class="row g-4">
+              <div class="col-md-4" *ngFor="let sport of sportsRecommendations">
+                <div class="card shadow-lg border-0">
+                  <div class="card-header bg-primary text-white text-center">
+                    <i class="bi bi-trophy-fill"></i> {{ sport.name }}
+                  </div>
+                  <div class="card-body">
+                    <p>
+                      <i class="bi bi-tools"></i>
+                      <strong> Benodigdheden:</strong>
+                      {{ sport.equipment?.join(', ') || 'Geen' }}
+                    </p>
+                    <p>
+                      <i class="bi bi-lightning-charge"></i>
+                      <strong> Intensiteit:</strong>
+                      {{ sport.intensity }}
+                    </p>
+                    <p>
+                      <i class="bi bi-house"></i>
+                      <strong> Binnen of Buiten:</strong>
+                      {{ sport.isIndoor ? 'Binnen' : 'Buiten' }}
+                    </p>
+                    <p>
+                      <i class="bi bi-tags"></i> <strong> Type sport:</strong>
+                      {{ sport.type }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Geen resultaten -->
+          <div
+            *ngIf="
+              !isLoadingRecommendations && sportsRecommendations.length === 0
+            "
+            class="text-center mt-5"
+          >
+            <h4 class="text-danger">
+              <i class="bi bi-exclamation-circle-fill"></i> Geen sporten
+              beschikbaar
+            </h4>
+            <p class="text-muted">
+              Er zijn geen sporten beschikbaar op basis van je huidige
+              voorkeuren. Pas je filters aan om meer sporten te ontdekken.
+            </p>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-5 gap-2 responsive-flex">
+          <!-- Knop voor sportvoorkeuren -->
+          <button
+            class="btn btn-primary responsive-btn resp-btn voorkeur-btn"
+            (click)="openPreferencesModal()"
+          >
+            <i class="bi bi-sliders me-2"></i> Sportvoorkeuren
+          </button>
+          <button
+            *ngIf="isLoggedIn"
+            class="btn btn-secondary responsive-btn w-100"
+            (click)="getCurrentPreferences()"
+          >
+            <i class="bi bi-lightbulb me-2"></i> Jouw suggesties
+          </button>
+
+          <!-- Zoekbalk met automatische suggesties -->
+          <div
+            class="search-bar-container position-relative responsive-width w-100"
+          >
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Zoek op stad"
+                [(ngModel)]="enteredLocation"
+                (keyup)="onCityInput()"
+                (keyup.enter)="searchWeather()"
+              />
+              <button
+                class="btn btn-primary"
+                type="button"
+                (click)="searchWeather()"
+              >
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+
+            <!-- Dropdown voor stadssuggesties -->
+            <ul
+              *ngIf="suggestedCities.length"
+              class="list-group shadow"
+              style="position: absolute; top: 100%; left: 0; width: 100%"
+            >
+              <li
+                *ngFor="let city of suggestedCities"
+                class="list-group-item list-group-item-action"
+                (click)="selectCity(city)"
+                tabindex="0"
+              >
+                {{ city.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          *ngIf="isLoadingWeather"
+          class="d-flex justify-content-center align-items-center"
+          style="height: 100px"
+        >
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Huidig weer -->
+        <div *ngIf="currentWeather" class="row g-4 align-items-stretch">
+          <div class="col-12 col-md-4">
+            <div
+              style="border: none !important"
+              [ngClass]="currentWeatherCondition"
+              class="card text-white h-100 weather-dashboard"
+            >
+              <div
+                style="justify-content: normal !important"
+                class="card-body card-body-weather text-center"
+              >
+                <button
+                  style="margin-left: auto"
+                  class="btn"
+                  (click)="refreshWeather()"
+                >
+                  <i
+                    style="font-size: 1.4rem"
+                    class="bi bi-arrow-clockwise refreshbtn"
+                  ></i>
+                </button>
+                <span *ngIf="isCurrentLocation" class="badge bg-success mb-2"
+                  >Huidige Locatie</span
+                >
+                <img
+                  [src]="
+                    weatherHelperService.getWeatherIcon(
+                      currentWeather.condition
+                    )
+                  "
+                  alt="Weather Icon"
+                  style="width: 100px; height: 100px"
+                />
+                <h4 class="card-title mb-2 stroke">
+                  {{ currentWeather.location }}
+                </h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-8">
+            <div class="row g-3">
+              <div
+                class="col-6 col-md-4"
+                *ngFor="
+                  let metric of [
+                    {
+                      title: 'Temperatuur',
+                      value: currentWeather.temperature,
+                      icon: 'thermometer-half'
+                    },
+                    {
+                      title: 'Voelt als',
+                      value: currentWeather.feelsLike,
+                      icon: 'thermometer-sun'
+                    },
+                    {
+                      title: 'Vochtigheid',
+                      value: currentWeather.humidity,
+                      icon: 'droplet'
+                    },
+                    {
+                      title: 'Weerconditie',
+                      value: currentWeather.condition,
+                      icon: 'cloud'
+                    },
+                    {
+                      title: 'Windsnelheid',
+                      value: currentWeather.windSpeed,
+                      icon: 'wind'
+                    },
+                    {
+                      title: 'Neerslag',
+                      value: currentWeather.precipitation,
+                      icon: 'cloud-rain'
+                    }
+                  ]
+                "
+              >
+                <div class="card text-white bg-primary shadow h-100">
+                  <div class="card-body text-center">
+                    <i
+                      class="bi bi-{{ metric.icon }} mb-3"
+                      style="font-size: 1.5rem"
+                    ></i>
+                    <h6 class="card-title">{{ metric.title }}</h6>
+                    <p class="card-text">{{ metric.value }}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
         <!-- Toggle knop voor weersvoorspelling -->
-        <div class="d-flex justify-content-end mt-4">
+        <div class="d-flex justify-content-center mt-4 weatherforecast-btn">
           <button
-          *ngIf="currentWeather"
+            *ngIf="currentWeather"
             class="btn btn-primary"
             (click)="toggleForecast()"
           >
-            {{ showForecast ? 'Verberg Weersvoorspelling' : 'Toon Weersvoorspelling' }}
+            {{
+              showForecast
+                ? 'Verberg Weersvoorspelling'
+                : 'Toon Weersvoorspelling'
+            }}
           </button>
         </div>
-        <div *ngIf="showForecast" [ngClass]="forecastBackgroundCondition" class="forecast-container mt-4">
-          <div class="card shadow-lg text-white forecast-card">
-            <div class="card-header text-center">
+        <div
+          *ngIf="showForecast"
+          [ngClass]="forecastBackgroundCondition"
+          class="forecast-container mt-4"
+        >
+          <div class="card shadow-lg bg-primary text-white forecast-card">
+            <div class="card-header bg-primary text-center">
               <h3>3-Uurs Weersvoorspelling</h3>
             </div>
             <div class="card-body">
               <div class="row g-4">
-                <div class="col-6 col-md-4" *ngFor="let forecast of weatherForecast">
+                <div
+                  class="col-6 col-md-4"
+                  *ngFor="let forecast of weatherForecast"
+                >
                   <div class="forecast-item">
                     <div class="forecast-time">
                       <i class="bi bi-clock"></i> {{ forecast.time }}
@@ -245,118 +286,132 @@
             </div>
           </div>
         </div>
-        
-<!-- Voorkeuren pop-up -->
-<div
-  class="modal fade show"
-  tabindex="-1"
-  [class.show]="showModal"
-  [ngStyle]="{ display: showModal ? 'block' : 'none' }"
-  role="dialog"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content shadow-lg">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title"><i class="bi bi-sliders"></i> Sportvoorkeuren</h5>
-        <button
-          type="button"
-          class="btn-close text-white"
-          (click)="closePreferencesModal()"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <!-- Binnen of Buiten -->
-          <div class="mb-4">
-            <label for="indoor" class="form-label"><i class="bi bi-house-door"></i> Binnen of Buiten?</label>
-            <select
-              id="indoor"
-              class="form-select"
-              [(ngModel)]="preferences.indoor"
-              name="indoor"
-            >
-              <option [value]="null">Geen voorkeur</option>
-              <option [value]="true">Binnen</option>
-              <option [value]="false">Buiten</option>
-            </select>
-          </div>
 
-          <!-- Sport Type -->
-          <div class="mb-4">
-            <label for="type" class="form-label">  <i class="bi bi-tag"></i> Sporttype</label>
-            <select
-              id="type"
-              class="form-select"
-              [(ngModel)]="preferences.type"
-              name="type"
-            >
-              <option [value]="''">Geen voorkeur</option>
-              <option *ngFor="let type of sportTypes" [value]="type">{{ type }}</option>
-            </select>
-          </div>
+        <!-- Voorkeuren pop-up -->
+        <div
+          class="modal fade show"
+          tabindex="-1"
+          [class.show]="showModal"
+          [ngStyle]="{ display: showModal ? 'block' : 'none' }"
+          role="dialog"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg">
+              <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                  <i class="bi bi-sliders"></i> Sportvoorkeuren
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close text-white"
+                  (click)="closePreferencesModal()"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <!-- Binnen of Buiten -->
+                  <div class="mb-4">
+                    <label for="indoor" class="form-label"
+                      ><i class="bi bi-house-door"></i> Binnen of Buiten?</label
+                    >
+                    <select
+                      id="indoor"
+                      class="form-select"
+                      [(ngModel)]="preferences.indoor"
+                      name="indoor"
+                    >
+                      <option [value]="null">Geen voorkeur</option>
+                      <option [value]="true">Binnen</option>
+                      <option [value]="false">Buiten</option>
+                    </select>
+                  </div>
 
-          <div class="mb-4">
-            <label class="form-label"><i class="bi bi-box"></i> Spullen die je hebt</label>
-            <div class="row">
-              <div class="col-6 col-md-4" *ngFor="let equipment of equipmentOptions">
-                <div class="form-check position-relative">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    [id]="equipment"
-                    [value]="equipment"
-                    (change)="toggleEquipment(equipment)"
-                    [checked]="preferences.equipment.includes(equipment)"
-                  />
-                  <label class="form-check-label" [for]="equipment">
-                    {{ equipment }}
-                  </label>
-                </div>
+                  <!-- Sport Type -->
+                  <div class="mb-4">
+                    <label for="type" class="form-label">
+                      <i class="bi bi-tag"></i> Sporttype</label
+                    >
+                    <select
+                      id="type"
+                      class="form-select"
+                      [(ngModel)]="preferences.type"
+                      name="type"
+                    >
+                      <option [value]="''">Geen voorkeur</option>
+                      <option *ngFor="let type of sportTypes" [value]="type">
+                        {{ type }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="form-label"
+                      ><i class="bi bi-box"></i> Spullen die je hebt</label
+                    >
+                    <div class="row">
+                      <div
+                        class="col-6 col-md-4"
+                        *ngFor="let equipment of equipmentOptions"
+                      >
+                        <div class="form-check position-relative">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            [id]="equipment"
+                            [value]="equipment"
+                            (change)="toggleEquipment(equipment)"
+                            [checked]="
+                              preferences.equipment.includes(equipment)
+                            "
+                          />
+                          <label class="form-check-label" [for]="equipment">
+                            {{ equipment }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Intensiteit -->
+                  <div class="mb-4">
+                    <label for="intensity" class="form-label"
+                      ><i class="bi bi-lightning-charge"></i> Intensiteit</label
+                    >
+                    <select
+                      id="intensity"
+                      class="form-select"
+                      [(ngModel)]="preferences.intensity"
+                      name="intensity"
+                    >
+                      <option [value]="''">Geen voorkeur</option>
+                      <option value="Low">Laag</option>
+                      <option value="Medium">Gemiddeld</option>
+                      <option value="High">Hoog</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer d-flex justify-content-between">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="closePreferencesModal()"
+                >
+                  <i class="bi bi-x-circle"></i> Annuleer
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary px-4 py-2"
+                  (click)="submitPreferences()"
+                >
+                  <i class="bi bi-check-circle"></i> Opslaan
+                </button>
               </div>
             </div>
           </div>
-          
-          
-
-          <!-- Intensiteit -->
-          <div class="mb-4">
-            <label for="intensity" class="form-label"><i class="bi bi-lightning-charge"></i> Intensiteit</label>
-            <select
-              id="intensity"
-              class="form-select"
-              [(ngModel)]="preferences.intensity"
-              name="intensity"
-            >
-              <option [value]="''">Geen voorkeur</option>
-              <option value="Low">Laag</option>
-              <option value="Medium">Gemiddeld</option>
-              <option value="High">Hoog</option>
-            </select>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer d-flex justify-content-between">
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          (click)="closePreferencesModal()"
-        >
-        <i class="bi bi-x-circle"></i> Annuleer
-        </button>
-        <button
-          type="button"
-          class="btn btn-primary px-4 py-2"
-          (click)="submitPreferences()"
-        >
-        <i class="bi bi-check-circle"></i> Opslaan
-        </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-
-</div>
-</div>
 </div>

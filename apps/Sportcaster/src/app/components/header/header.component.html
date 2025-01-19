@@ -1,8 +1,7 @@
-<header style="padding: 0px !important;" class="header bg-light shadow-sm">
+<header class="header">
   <nav class="navbar navbar-expand-lg navbar-light container">
     <!-- Logo -->
     <a class="navbar-brand d-flex align-items-center" routerLink="/">
-      <img src="assets/weather-logo.png" alt="Sportcaster Logo" class="logo mr-2" />
       <span class="brand-name">Sportcaster</span>
     </a>
 
@@ -25,17 +24,23 @@
       <div class="ms-auto d-flex align-items-center">
         <!-- Niet ingelogd -->
         <div *ngIf="!isLoggedIn(); else loggedIn">
-          <a routerLink="/login" class="btn btn-outline-primary me-2 wideButton">
+          <a
+            routerLink="/login"
+            class="btn btn-outline-primary me-2 wideButton login-button"
+          >
             <i class="bi bi-box-arrow-in-right"></i> Login
           </a>
-          <a routerLink="/register" class="btn btn-primary wideButton">
+          <a
+            routerLink="/register"
+            class="btn btn-primary wideButton register-button"
+          >
             <i class="bi bi-person-plus"></i> Registreer
           </a>
         </div>
 
         <!-- Ingelogd -->
         <ng-template #loggedIn>
-          <div class="dropdown" style="margin: 10px;">
+          <div class="dropdown" style="margin: 10px">
             <a
               class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
               id="userDropdown"
@@ -43,7 +48,10 @@
               aria-expanded="false"
               role="button"
             >
-              <span class="fw-bold text-primary text-truncate" style="max-width: 150px;">
+              <span
+                class="fw-bold text-primary text-truncate"
+                style="max-width: 150px"
+              >
                 Welkom {{ getFormattedUsername() }}
               </span>
             </a>
