@@ -1,72 +1,89 @@
 <div class="register-container d-flex justify-content-center align-items-center">
     <div class="card p-4" style="width: 400px; margin-top: 10vh; margin-bottom: 10vh;">
-        <h3 class="text-center mb-4">Register</h3>
-        <form #registerForm="ngForm" (ngSubmit)="register()">
-            <!-- Name Field -->
-            <div class="form-group mb-3">
-                <input
-                    id="name"
-                    type="text"
-                    class="form-control"
-                    placeholder="Name"
-                    [(ngModel)]="registrationData.name"
-                    name="name"
-                    required
-                    minlength="2"
-                />
-                <div *ngIf="registerForm.controls['name']?.invalid && registerForm.controls['name']?.touched" class="text-danger mt-1">
-                    Name is required and must be at least 2 characters long.
-                </div>
-            </div>
-
-            <!-- Email Field -->
-            <div class="form-group mb-3">
-                <input
-                    id="emailAddress"
-                    type="email"
-                    class="form-control"
-                    placeholder="Email Address"
-                    [(ngModel)]="registrationData.emailAddress"
-                    name="emailAddress"
-                    required
-                    email
-                />
-                <div *ngIf="registerForm.controls['emailAddress']?.invalid && registerForm.controls['emailAddress']?.touched" class="text-danger mt-1">
-                    A valid email address is required.
-                </div>
-            </div>
-
-            <!-- Password Field -->
-            <div class="form-group mb-3">
-                <input
-                    id="password"
-                    type="password"
-                    class="form-control"
-                    placeholder="Password"
-                    [(ngModel)]="registrationData.password"
-                    name="password"
-                    required
-                    minlength="6"
-                />
-                <div *ngIf="registerForm.controls['password']?.invalid && registerForm.controls['password']?.touched" class="text-danger mt-1">
-                    Password is required and must be at least 6 characters long.
-                </div>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary w-100 mb-3" [disabled]="registerForm.invalid">
-                Register
-            </button>
-
-            <div class="text-center">
-                <button type="button" class="btn btn-link text-decoration-none" (click)="navigateToLogin()">Already have an account? Login</button>
-
-            </div>
-        </form>
-
-        <!-- Error Message -->
-        <div *ngIf="errorMessage" class="error-message text-danger mt-3 text-center">
-            {{ errorMessage }}
+      <h3 class="text-center mb-4">Register</h3>
+      <form #registerForm="ngForm" (ngSubmit)="register()">
+        <!-- Name Field -->
+        <div class="form-group mb-3">
+          <input
+            id="name"
+            type="text"
+            class="form-control"
+            placeholder="Name"
+            [(ngModel)]="registrationData.name"
+            name="name"
+            required
+            minlength="2"
+          />
+          <div *ngIf="registerForm.controls['name']?.invalid && registerForm.controls['name']?.touched" class="text-danger mt-1">
+            Name is required and must be at least 2 characters long.
+          </div>
         </div>
+  
+        <!-- Email Field -->
+        <div class="form-group mb-3">
+          <input
+            id="emailAddress"
+            type="email"
+            class="form-control"
+            placeholder="Email Address"
+            [(ngModel)]="registrationData.emailAddress"
+            name="emailAddress"
+            required
+            email
+          />
+          <div *ngIf="registerForm.controls['emailAddress']?.invalid && registerForm.controls['emailAddress']?.touched" class="text-danger mt-1">
+            A valid email address is required.
+          </div>
+        </div>
+  
+        <!-- Password Field -->
+        <div class="form-group mb-3">
+          <input
+            id="password"
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            [(ngModel)]="registrationData.password"
+            name="password"
+            required
+            minlength="6"
+          />
+          <div *ngIf="registerForm.controls['password']?.invalid && registerForm.controls['password']?.touched" class="text-danger mt-1">
+            Password is required and must be at least 6 characters long.
+          </div>
+        </div>
+  
+        <!-- Confirm Password Field -->
+        <div class="form-group mb-3">
+          <input
+            id="confirmPassword"
+            type="password"
+            class="form-control"
+            placeholder="Confirm Password"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            required
+            minlength="6"
+          />
+          <div *ngIf="!passwordsMatch() && confirmPassword" class="text-danger mt-1">
+            Passwords do not match.
+          </div>
+        </div>
+  
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100 mb-3" [disabled]="registerForm.invalid || !passwordsMatch()">
+          Register
+        </button>
+  
+        <div class="text-center">
+          <button type="button" class="btn btn-link text-decoration-none" (click)="navigateToLogin()">Already have an account? Login</button>
+        </div>
+      </form>
+  
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="error-message text-danger mt-3 text-center">
+        {{ errorMessage }}
+      </div>
     </div>
-</div>
+  </div>
+  

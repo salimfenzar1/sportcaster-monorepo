@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@libs/frontend/features/src/lib/auth/auth.service';
-import { IUserIdentity, IUserRegistration } from '@libs/shared/api/src';
+import { IUserRegistration } from '@libs/shared/api/src';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  standalone: true, // ✅ Zorg ervoor dat dit aanwezig is
+  standalone: true,
   selector: 'app-register',
   templateUrl: './register.component.html',
-  imports: [CommonModule, FormsModule] // ✅ Nodige modules importeren
+  imports: [CommonModule, FormsModule]
 })
 export class RegisterComponent {
   registrationData: IUserRegistration = {
@@ -18,6 +18,7 @@ export class RegisterComponent {
     password: ''
   };
 
+  confirmPassword: string = '';
   errorMessage: string | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -26,24 +27,29 @@ export class RegisterComponent {
     this.router.navigate(['/login']);
   }
 
+  passwordsMatch(): boolean {
+    return this.registrationData.password === this.confirmPassword;
+  }
+
   register(): void {
+    if (!this.passwordsMatch()) {
+      this.errorMessage = 'Passwords do not match.';
+      return;
+    }
+
     this.authService.register(this.registrationData).subscribe({
-        next: (response: any) => {
-            console.log('Registration successful:', response);
-            this.router.navigate(['/login']);
-        },
-        error: (err) => {
-            console.error('Registration error occurred:', err);
-
-            if (err.error?.errors) {
-                this.errorMessage = err.error.errors
-                    .map((e: any) => `${e.field}: ${e.message}`)
-                    .join(', ');
-            } else {
-                this.errorMessage = err.error?.message || 'An unexpected error occurred. Please try again.';
-            }
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        if (err.error?.errors) {
+          this.errorMessage = err.error.errors
+            .map((e: any) => `${e.field}: ${e.message}`)
+            .join(', ');
+        } else {
+          this.errorMessage = err.error?.message || 'An unexpected error occurred. Please try again.';
         }
+      }
     });
+  }
 }
-}
-
