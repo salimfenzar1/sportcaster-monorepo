@@ -150,6 +150,15 @@ export class DashboardComponent implements OnInit {
         this.preferences.indoor === 'true' ? true : this.preferences.indoor === 'false' ? false : null;
     }
   
+    const weatherFilter = (sport: ISport) => {
+      if (!this.currentWeather) return true; // Als het weer niet beschikbaar is, geen filter toepassen
+      const temp = parseFloat(this.currentWeather.temperature.replace('°C', ''));
+      const precipitation = parseFloat(this.currentWeather.precipitation.replace(' mm', ''));
+  
+      const isBadWeather = temp < 5 || temp > 25 || precipitation > 0;
+      return isBadWeather ? sport.isIndoor : true;
+    };
+  
     console.log('Indoor voorkeur na conversie:', this.preferences.indoor);
   
     // Indoor filter
@@ -180,6 +189,7 @@ const typeFilter = this.preferences.type
     // Combine filters
     const filteredSports = this.allSports.filter((sport) => {
       return (
+        weatherFilter(sport) &&
         indoorFilter(sport) &&
         typeFilter(sport) &&
         equipmentFilter(sport) &&
