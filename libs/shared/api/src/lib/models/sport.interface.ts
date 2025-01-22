@@ -16,22 +16,25 @@ export enum SportType {
 
 export enum Equipment {
     Mat = 'Mat',
-    Bike = 'Bike',
-    Dumbbell = 'Dumbbell',
-    Basketball = 'Basketball',
-    JumpRope = 'Jump Rope',
-    Shoes = 'Shoes',
-    Kayak = 'Kayak',
-    Paddle = 'Paddle',
-    LifeJacket = 'Life Jacket',
-    Racket = 'Racket'
+    Fiets = 'Fiets',
+    Halter = 'Halter',
+    Basketbal = 'Basketbal',
+    Springtouw = 'Springtouw',
+    Schoenen = 'Schoenen',
+    Kajak = 'Kajak',
+    Peddel = 'Peddel',
+    Zwemvest = 'Zwemvest',
+    Racket = 'Racket',
+    Bal = 'Bal',
+    Helm = 'Helm',
+    Bokshandschoenen = 'Bokshandschoenen',
   }
   
 
 export enum SportIntensity {
-    Low = 'Low',
-    Medium = 'Medium',
-    High = 'High'
+    Low = 'Laag',
+    Medium = 'Gemiddeld',
+    High = 'Hoog'
 }
 
 export interface ISport {
